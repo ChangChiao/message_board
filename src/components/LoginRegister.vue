@@ -1,10 +1,10 @@
 <script setup>
-import Input from "../components/Input.vue";
+import Input from '../components/Input.vue';
 </script>
 
 <template>
-    <div>
-        <Input />
-        <Input />
-    </div>
+  <div>
+    <Input />
+    <Input />
+  </div>
 </template>

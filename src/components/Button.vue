@@ -1,8 +1,5 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
-    <button></button>
+  <button></button>
 </template>
-

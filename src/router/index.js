@@ -1,21 +1,22 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Login from "../views/Login.vue"
+import { createRouter, createWebHashHistory } from 'vue-router';
+import Login from '../views/Login.vue';
 const routes = [
   {
     path: '/',
     name: 'login',
-    component: Login
+    component: Login,
   },
   {
     path: '/postwall',
     name: 'postwall',
-    component: () => import(/* webpackChunkName: "about" */ '../views/PostWall.vue')
-  }
-]
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/PostWall.vue'),
+  },
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

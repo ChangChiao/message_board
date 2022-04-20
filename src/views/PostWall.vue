@@ -1,7 +1,7 @@
 <script setup>
-import Post from "../components/Post.vue";
-import SearchBar from "../components/SearchBar.vue";
-import PostWallMenu from "../components/PostWallMenu.vue";
+import Post from '../components/Post.vue';
+import SearchBar from '../components/SearchBar.vue';
+import PostWallMenu from '../components/PostWallMenu.vue';
 </script>
 
 <template>
@@ -13,6 +13,3 @@ import PostWallMenu from "../components/PostWallMenu.vue";
     <PostWallMenu />
   </aside>
 </template>
-
-
-
