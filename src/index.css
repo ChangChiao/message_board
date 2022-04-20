@@ -5,7 +5,22 @@
 
 @layer base {
     input {
-        outline: none;
+        @apply outline-none;
     }
 }
 
+
+@layer components {
+    .box {
+        @apply bg-white border-2 border-black;
+    }
+    .box-rounded {
+        @apply box rounded-lg shadow-normal;
+    }
+    .button{
+        @apply rounded-[20px] bg-primary text-white shadow-3D;
+    }
+    .avatar {
+        @apply rounded-full border-2 border-black;
+    }
+}

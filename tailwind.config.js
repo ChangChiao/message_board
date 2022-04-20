@@ -8,6 +8,12 @@ module.exports = {
       colors:{
         primary: "#03438D",
         secondary: "#EFECE7",
+        black: "#000400",
+        gray: "#9B9893",
+      },
+      boxShadow: {
+        'normal': '0px 3px 0px #000400',
+        '3D': '-2px 2px 0px #000400',
       }
     },
   },
