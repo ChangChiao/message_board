@@ -7,6 +7,8 @@ module.exports = {
         secondary: '#EFECE7',
         black: '#000400',
         gray: '#9B9893',
+        yellow: '#EEC32A',
+        red: '#F57375',
       },
       boxShadow: {
         normal: '0px 3px 0px #000400',
