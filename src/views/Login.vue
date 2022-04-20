@@ -1,3 +1,6 @@
+<script setup>
+
+</script>
 <template>
     <section class="border-2 flex items-center">
         <img src="" alt="">
@@ -10,8 +13,4 @@
 
     </section>
 </template>
-
-<script setup>
-
-</script>
 

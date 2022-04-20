@@ -1,3 +1,6 @@
+<script setup>
+
+</script>
 <template>
   <div class="box-rounded">
     <div class="flex items-center">
@@ -12,6 +15,3 @@
   </div>
 </template>
 
-<script setup>
-
-</script>

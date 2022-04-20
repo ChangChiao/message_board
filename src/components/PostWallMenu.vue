@@ -1,3 +1,7 @@
+<script setup>
+
+</script>
+
 <template>
   <div class="box">
     <button class="button">張貼動態</button>
@@ -9,7 +13,3 @@
     </ul>
   </div>
 </template>
-
-<script setup>
-
-</script>
