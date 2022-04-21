@@ -1,5 +1,4 @@
 <script setup>
-import UserCard from '../components/UserCard.vue';
 import { reactive } from 'vue';
 const menuList = reactive([
   { icon: 'fa-regular fa-thumbs-up', path: '' },
@@ -11,7 +10,11 @@ const menuList = reactive([
 <template>
   <div class="rounded-[32px]">
     <ul class="flex justify-between">
-      <li class="border-2 rounded-full flex items-center justify-center">
+      <li
+        v-for="(item, i) in menuList"
+        :key="i"
+        class="border-2 rounded-full flex items-center justify-center"
+      >
         <font-awesome-icon icon="fa-solid fa-user-secret" />
       </li>
     </ul>

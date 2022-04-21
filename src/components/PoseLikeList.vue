@@ -1,6 +1,4 @@
-<script setup>
-import UserCard from '../components/UserCard.vue';
-</script>
+<script setup></script>
 <template>
   <div class="">
     <h1>我按讚的貼文</h1>

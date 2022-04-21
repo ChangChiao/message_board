@@ -1,14 +1,17 @@
 <script setup>
-import { reactive, ref, onBeforeUnmount } from 'vue';
+import { reactive, onBeforeUnmount } from 'vue';
 import Input from '../components/Input.vue';
 import { useValidateStore } from '@/store';
 const validateStore = useValidateStore();
+
+// eslint-disable-next-line no-unused-vars
 const loginData = reactive({
   userName: '',
   password: '',
 });
 const handleSubmit = () => {
-  updateErrorFlag(true);
+  // eslint-disable-next-line no-unused-vars
+  validateStore.updateErrorFlag(true);
 };
 
 onBeforeUnmount(() => {

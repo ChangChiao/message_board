@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, reactive, watch, ref, toRefs, onMounted } from 'vue';
+import { defineProps, watch, ref, toRefs, onMounted } from 'vue';
 import regex from '../utils/valid/regex';
 import error from '../utils/valid/error';
 import { storeToRefs } from 'pinia';
@@ -15,7 +15,7 @@ const props = defineProps({
     required: true,
   },
   type: {
-    type: Number,
+    type: String,
     default: 'text',
   },
 });
@@ -24,7 +24,7 @@ const { validateList, errorFlag } = storeToRefs(validateStore);
 const showError = ref(false);
 const { validId, inputValue, vaildField } = toRefs(props);
 const vaildDate = () => {
-  for (let vaild of vaildField.value) {
+  for (const vaild of vaildField.value) {
     const rule = regex[vaild];
     if (rule(inputValue.value)) {
       setError();

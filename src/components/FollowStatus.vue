@@ -4,6 +4,7 @@ import UserCard from '../components/UserCard.vue';
 <template>
   <div class="bg-white flex items-center">
     <img src="" alt="" />
+    <UserCard />
     <div>
       <p>阿阿</p>
       <p>8777人追蹤</p>
