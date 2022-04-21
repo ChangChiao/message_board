@@ -6,6 +6,10 @@
   input {
     @apply outline-none;
   }
+
+  body  {
+    font-family: Noto Sans TC, sans-serif;
+  }
 }
 
 @layer components {

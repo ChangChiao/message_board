@@ -1,6 +1,9 @@
 module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      body: ['Noto Sans TC', 'sans-serif']
+    },
     extend: {
       colors: {
         primary: '#03438D',
@@ -8,6 +11,7 @@ module.exports = {
         black: '#000400',
         gray: '#9B9893',
         yellow: '#EEC32A',
+        sky: '#E2EDFA',
         red: '#F57375'
       },
       boxShadow: {
