@@ -9,8 +9,8 @@ const list = reactive([
 
 <template>
   <section>
-    <div>追蹤名單</div>
-    <ul>
+    <h1 class="title">追蹤名單</h1>
+    <ul class="pt-4">
       <template v-for="item in list" :key="item.id">
         <FollowListItem />
       </template>

@@ -31,4 +31,7 @@
   .title {
     @apply border-2 flex items-center justify-center bg-white h-[64px] relative before:-z-10 before:w-full before:h-full before:bg-white before:content-[''] before:border-2 before:absolute before:-bottom-1.5 before:-left-1.5;
   }
+  .dot{
+      @apply w-[9px] h-[9px] mr-1.5 rounded-full border-[#707070] border;
+  }
 }
