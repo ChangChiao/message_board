@@ -3,18 +3,18 @@ import { defineStore } from 'pinia';
 export default defineStore('groupPath', {
   state: () => ({
     validateList: [],
-    errorFlag: false,
+    errorFlag: false
   }),
   actions: {
-    updateValidateList(arr) {
+    updateValidateList (arr) {
       this.validateList = arr;
     },
-    updateErrorFlag(boolean) {
+    updateErrorFlag (boolean) {
       this.errorFlag = boolean;
     },
-    resetVaild() {
+    resetVaild () {
       this.errorFlag = false;
       this.validateList = [];
-    },
-  },
+    }
+  }
 });

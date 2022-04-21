@@ -16,7 +16,10 @@
     @apply box rounded-lg shadow-normal;
   }
   .button {
-    @apply rounded-[20px] bg-primary text-white shadow-3D;
+    @apply rounded-lg bg-primary text-white shadow-3D;
+  }
+  .disabled {
+    @apply bg-[#A8B0B9] text-white border-[#808080];
   }
   .avatar {
     @apply rounded-full border-2 border-black;

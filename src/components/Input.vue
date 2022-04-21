@@ -7,17 +7,20 @@ import { useValidateStore } from '@/store';
 const props = defineProps({
   validId: {
     type: String,
-    required: true,
+    required: true
   },
   inputValue: null,
   vaildField: {
     type: Array,
-    required: true,
+    required: true
   },
   type: {
     type: String,
-    default: 'text',
+    default: 'text'
   },
+  placeholder: {
+    type: String
+  }
 });
 const validateStore = useValidateStore();
 const { validateList, errorFlag } = storeToRefs(validateStore);
@@ -53,8 +56,8 @@ onMounted(() => {});
 </script>
 
 <template>
-  <div class="border-2 p-2">
-    <input :value="inputValue" class="text-gray-400" placeholder="暱稱" />
-    <p v-if="showError" class="text-red-700">{{ error[validId] }}</p>
+  <div class="border-2 my-2 w-[373px] h-[51px] flex items-center bg-white border-black p-4">
+    <input :value="inputValue" class="w-full h-7 text-gray-400" :placeholder="placeholder" />
+    <p v-if="showError" class="text-red">{{ error[validId] }}</p>
   </div>
 </template>

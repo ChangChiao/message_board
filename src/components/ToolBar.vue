@@ -4,7 +4,7 @@ const menuList = reactive([
   { icon: 'fa-regular fa-thumbs-up', path: '' },
   { icon: 'fa-solid fa-plus', path: '' },
   { icon: 'fa-solid fa-house', path: '' },
-  { icon: 'fa-regular fa-bell', path: '' },
+  { icon: 'fa-regular fa-bell', path: '' }
 ]);
 </script>
 <template>
