@@ -5,7 +5,11 @@ import Thumbs from '../icons/Thumbs.vue';
 
 <template>
   <div class="box w-[309px] p-8">
-    <button class="button w-[261px] h-[54px]">張貼動態</button>
+    <button class="button w-[261px] h-[54px]">
+      <router-link class="flex items-center justify-center w-full" to="/postadd">
+      張貼動態
+      </router-link>
+    </button>
     <ul class="pt-4">
       <li class="pb-4">
         <router-link class="flex items-center  w-full" to="/userInfo">
