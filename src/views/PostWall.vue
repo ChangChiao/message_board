@@ -2,9 +2,11 @@
 import Post from '../components/Post.vue';
 import SearchBar from '../components/SearchBar.vue';
 import Select from '../components/Select.vue';
+import FollowStatus from '../components/FollowStatus.vue';
 </script>
 
 <template>
+    <FollowStatus />
     <div class="flex justify-between">
       <Select />
       <SearchBar />

@@ -1,16 +1,18 @@
 <script setup>
 import UserCard from '../components/UserCard.vue';
+import Thumbs from '../icons/Thumbs.vue';
+import ArrowRight from '../icons/ArrowRight.vue';
 </script>
 <template>
-  <li class="box-rounded flex items-center p-4 justify-between h-[77px]">
+  <li class="box-rounded flex items-center p-4 pr-10 justify-between h-[77px]">
     <UserCard />
     <div class="flex">
-      <div>
-        <i class="fa-solid fa-thumbs-up block text-lg"></i>
+      <div class="flex flex-col items-center justify-between">
+        <Thumbs />
         取消
       </div>
-      <div class="pl-6">
-        <i class="fa-solid fa-circle-arrow-right block text-lg"></i>
+      <div class="pl-6 flex flex-col items-center justify-between">
+        <ArrowRight />
         查看
       </div>
     </div>

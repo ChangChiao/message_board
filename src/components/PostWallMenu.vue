@@ -1,5 +1,6 @@
 <script setup>
-
+import Bell from '../icons/Bell.vue';
+import Thumbs from '../icons/Thumbs.vue';
 </script>
 
 <template>
@@ -15,7 +16,7 @@
       <li class="pb-4">
         <router-link class="flex items-center  w-full" to="/follow">
           <div class="w-[50px] h-[50px] border-2 flex items-center justify-center bg-sky rounded-full">
-            <i class="fa-solid fa-bell"></i>
+            <Bell />
           </div>
           <span class="pl-4 text-bold">追蹤名單</span>
         </router-link>
@@ -23,7 +24,7 @@
       <li class="">
         <router-link class="flex items-center  w-full" to="/likes">
         <div class="w-[50px] h-[50px] border-2 flex items-center justify-center bg-sky rounded-full">
-          <i class="fa-solid fa-thumbs-up"></i>
+          <Thumbs />
         </div>
         <span class="pl-4 text-bold">我按讚的文章</span>
         </router-link>

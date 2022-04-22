@@ -5,6 +5,7 @@ import PostDefault from '../views/PostDefault.vue';
 import FollowList from '../views/FollowList.vue';
 import UserInfo from '../views/UserInfo.vue';
 import PoseLikeList from '../views/PoseLikeList.vue';
+import PostAdd from '../views/PostAdd.vue';
 const routes = [
   {
     path: '/',
@@ -13,12 +14,12 @@ const routes = [
   },
   {
     path: '/post',
-    name: 'postdefault',
+    name: 'postDefault',
     component: PostDefault,
     children: [
       {
         path: '/postwall',
-        name: 'postwall',
+        name: 'postWall',
         component: PostWall
       },
       {
@@ -35,6 +36,11 @@ const routes = [
         path: '/likes',
         name: 'poseLikeList',
         component: PoseLikeList
+      },
+      {
+        path: '/postadd',
+        name: 'PostAdd',
+        component: PostAdd
       }
     ]
   }
