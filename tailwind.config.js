@@ -4,6 +4,9 @@ module.exports = {
     fontFamily: {
       body: ['Noto Sans TC', 'sans-serif']
     },
+    // borderRadius: {
+    //   rectTest: '8px 8px 0px 0px'
+    // },
     extend: {
       colors: {
         primary: '#03438D',

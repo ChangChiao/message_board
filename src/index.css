@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;600;700;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,6 +7,10 @@
 @layer base {
   input {
     @apply outline-none;
+  }
+
+  input[type="radio"]{
+      @apply border;
   }
 
   body  {
@@ -20,10 +26,10 @@
     @apply box rounded-lg shadow-normal;
   }
   .button {
-    @apply rounded-lg bg-primary text-white shadow-3D;
+    @apply rounded-lg bg-primary text-white shadow-3D border-2;
   }
   .disabled {
-    @apply bg-[#A8B0B9] text-white border-[#808080];
+    @apply bg-[#A8B0B9] text-white border-[#808080] shadow-none;
   }
   .avatar {
     @apply rounded-full border-2 border-black;
