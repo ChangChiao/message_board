@@ -1,6 +1,6 @@
 <script setup></script>
 <template>
-  <div class="box-rounded w-[533px] min-h-[133px] p-6">
+  <div class="box-rounded w-full smw-[533px] min-h-[133px] p-6">
     <div class="flex">
       <img src="../assets/images/user.png" alt="" />
       <div class="pl-3">

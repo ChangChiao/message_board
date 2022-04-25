@@ -1,22 +1,23 @@
 <script setup>
 const errorList = {
   large: '圖片檔案過大，僅限 1mb 以下檔案',
-  fileName: '圖片格式錯誤，僅限 JPG、PNG 圖片',
-}
-const imgType = ['jpg',"jpeg", "png"]
+  fileName: '圖片格式錯誤，僅限 JPG、PNG 圖片'
+};
+const imgType = ['jpg', 'jpeg', 'png'];
+// eslint-disable-next-line no-undef
 const emit = defineEmits(['setFile', 'setError']);
 const uploadImage = (event) => {
   const file = event.target.files[0];
-  if(imgType.includes(file.type)){
-    emit('setError', errorList.fileName)
-    return
+  if (imgType.includes(file.type)) {
+    emit('setError', errorList.fileName);
+    return;
   }
-  if(file.size > 1024 * 1024){
-    emit('setError', errorList.large)
-    return
+  if (file.size > 1024 * 1024) {
+    emit('setError', errorList.large);
+    return;
   }
-  setFile(file);
-}
+  emit('setFile', file);
+};
 </script>
 
 <template>
