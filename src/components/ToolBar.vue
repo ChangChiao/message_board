@@ -13,7 +13,7 @@ const menuList = reactive([
 
 </script>
 <template>
-  <div class="sm-hidden border-2 bg-[#EFECE7] px-6 fixed bottom-10 rounded-[32px] w-11/12 h-[65px]">
+  <div class="block sm:hidden border-2 bg-[#EFECE7] px-6 fixed bottom-10 rounded-[32px] w-11/12 h-[65px]">
     <ul class="flex h-full justify-between items-center">
       <li
         v-for="(item, i) in menuList"

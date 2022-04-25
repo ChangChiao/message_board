@@ -9,7 +9,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  inputValue: null,
+  modelValue: null,
   vaildField: {
     type: Array,
     required: true
@@ -20,36 +20,49 @@ const props = defineProps({
   },
   placeholder: {
     type: String
+  },
+  maxLength: {
+    type: Number,
+    default: 12
   }
 });
 const validateStore = useValidateStore();
 const { validateList, errorFlag } = storeToRefs(validateStore);
-const showError = ref(false);
-const { validId, inputValue, vaildField } = toRefs(props);
+const vaildFail = ref(null);
+const { validId, modelValue, vaildField } = toRefs(props);
 const vaildDate = () => {
   for (const vaild of vaildField.value) {
+    console.log('vaild', vaild);
     const rule = regex[vaild];
-    if (rule(inputValue.value)) {
+    console.log('rule', rule(modelValue.value));
+    if (!rule(modelValue.value)) {
       setError();
-      showError.value = true;
-      break;
+      vaildFail.value = vaild;
+      return;
     }
   }
+  vaildFail.value = null;
   validateStore.updateValidateList([]);
 };
 
-watch(inputValue, (newVal) => {
+watch(modelValue, (newVal) => {
   vaildDate();
 });
 
 watch(errorFlag, (newVal) => {
-  newVal && vaildDate();
+  errorFlag.value && vaildDate();
 });
 
 const setError = () => {
-  const temp = [...validateList.value];
-  temp.push(validId.value);
-  validateStore.updateValidateList(temp);
+  const temp = new Set([...validateList.value, validId.value]);
+  validateStore.updateValidateList([...temp]);
+};
+
+// eslint-disable-next-line no-undef
+const emit = defineEmits(['change']);
+
+const handelChange = (event) => {
+  emit('update:modelValue', event.target.value);
 };
 
 onMounted(() => {});
@@ -57,7 +70,7 @@ onMounted(() => {});
 
 <template>
   <div class="border-2 my-2 w-[373px] h-[51px] flex items-center bg-white border-black p-4">
-    <input :value="inputValue" class="w-full h-7 text-gray-400" :placeholder="placeholder" />
-    <p v-if="showError" class="text-red">{{ error[validId] }}</p>
+    <input :maxlength="maxLength" :value="modelValue" @input="handelChange" class="w-full h-7 text-gray-400" :placeholder="placeholder" :type="type" />
   </div>
+  <p v-if="errorFlag" class="text-red">{{ error[vaildFail] }}</p>
 </template>
