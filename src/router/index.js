@@ -8,12 +8,12 @@ import PoseLikeList from '../views/PoseLikeList.vue';
 import PostAdd from '../views/PostAdd.vue';
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login
   },
   {
-    path: '/post',
+    path: '/',
     name: 'postDefault',
     component: PostDefault,
     children: [
