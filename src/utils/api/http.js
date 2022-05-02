@@ -4,7 +4,10 @@ const service = axios.create({});
 
 service.interceptors.request.use(
   (config) => {
-    const params = config.params;
+    if (config.data.headers['Content-Type'] === 'multipart/form-data') {
+      return config;
+    }
+    const params = config.data.params;
     Object.keys(params).forEach((vo) => {
       if (!params[vo]) delete params[vo];
     });
@@ -17,6 +20,7 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
+    console.log('response', response.status);
     return response.data;
   },
   (error) => {

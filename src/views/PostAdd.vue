@@ -1,5 +1,11 @@
 <script setup>
+// import { onMounted } from 'vue';
 import UploadFile from '../components/UploadFile.vue';
+
+// onMounted(() => {
+
+// });
+
 </script>
 <template>
   <h1 class="title mb-4">張貼動態</h1>

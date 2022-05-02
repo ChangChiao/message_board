@@ -1,4 +1,23 @@
 <script setup>
+import { postFormData } from '../utils/api/ajax.js';
+// const getImgurToken = async () => {
+//   // eslint-disable-next-line camelcase
+//   const { access_token } = await fetch('https://api.imgur.com/oauth2/token', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded'
+//     },
+//     body: new URLSearchParams({
+//       refresh_token: process.env.IMGUR_REFRESH_TOKEN,
+//       client_id: process.env.IMGUR_CLINETID,
+//       client_secret: process.env.IMGUR_CLINET_SECRET,
+//       grant_type: 'refresh_token'
+
+//     })
+//   }).then(res => res.json());
+//   localStorage.setItem('access_token', access_token);
+// };
+
 const errorList = {
   large: '圖片檔案過大，僅限 1mb 以下檔案',
   fileName: '圖片格式錯誤，僅限 JPG、PNG 圖片'
@@ -16,7 +35,20 @@ const uploadImage = (event) => {
     emit('setError', errorList.large);
     return;
   }
-  emit('setFile', file);
+  sendImgToImgur(file);
+  // emit('setFile', file);
+};
+
+const sendImgToImgur = async (file) => {
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('type', 'file');
+  try {
+    const result = await postFormData(formData);
+    console.log('result', result);
+  } catch (error) {
+    console.log('error-imgur', error);
+  }
 };
 </script>
 
