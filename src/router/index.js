@@ -18,7 +18,7 @@ const routes = [
     component: PostDefault,
     children: [
       {
-        path: '/postwall',
+        path: '/',
         name: 'postWall',
         component: PostWall
       },

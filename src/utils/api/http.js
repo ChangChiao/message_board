@@ -4,7 +4,8 @@ const service = axios.create({});
 
 service.interceptors.request.use(
   (config) => {
-    if (config.data.headers['Content-Type'] === 'multipart/form-data') {
+    console.log('config', config);
+    if (config.headers['Content-Type'] === 'multipart/form-data') {
       return config;
     }
     const params = config.data.params;

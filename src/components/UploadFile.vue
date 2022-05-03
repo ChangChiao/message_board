@@ -8,9 +8,9 @@ import { postFormData } from '../utils/api/ajax.js';
 //       'Content-Type': 'application/x-www-form-urlencoded'
 //     },
 //     body: new URLSearchParams({
-//       refresh_token: process.env.IMGUR_REFRESH_TOKEN,
-//       client_id: process.env.IMGUR_CLINETID,
-//       client_secret: process.env.IMGUR_CLINET_SECRET,
+//       refresh_token: process.env.VUE_APP_IMGUR_REFRESH_TOKEN,
+//       client_id: process.env.VUE_APP_IMGUR_CLINETID,
+//       client_secret: process.env.VUE_APP_IMGUR_CLINET_SECRET,
 //       grant_type: 'refresh_token'
 
 //     })
@@ -43,9 +43,15 @@ const sendImgToImgur = async (file) => {
   const formData = new FormData();
   formData.append('image', file);
   formData.append('type', 'file');
+  // formData.append('album', 'RLtC2t7');
   try {
     const result = await postFormData(formData);
+    const { link, status } = result.data;
     console.log('result', result);
+    console.log('link', link);
+    if (status === 200) {
+      emit('setFile', link);
+    }
   } catch (error) {
     console.log('error-imgur', error);
   }
