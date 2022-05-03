@@ -1,22 +1,21 @@
 <script setup>
 import { postFormData } from '../utils/api/ajax.js';
-// const getImgurToken = async () => {
-//   // eslint-disable-next-line camelcase
-//   const { access_token } = await fetch('https://api.imgur.com/oauth2/token', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/x-www-form-urlencoded'
-//     },
-//     body: new URLSearchParams({
-//       refresh_token: process.env.VUE_APP_IMGUR_REFRESH_TOKEN,
-//       client_id: process.env.VUE_APP_IMGUR_CLINETID,
-//       client_secret: process.env.VUE_APP_IMGUR_CLINET_SECRET,
-//       grant_type: 'refresh_token'
-
-//     })
-//   }).then(res => res.json());
-//   localStorage.setItem('access_token', access_token);
-// };
+const getImgurToken = async () => {
+  // eslint-disable-next-line camelcase
+  const { access_token } = await fetch('https://api.imgur.com/oauth2/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      refresh_token: process.env.VUE_APP_IMGUR_REFRESH_TOKEN,
+      client_id: process.env.VUE_APP_IMGUR_CLINETID,
+      client_secret: process.env.VUE_APP_IMGUR_CLINET_SECRET,
+      grant_type: 'refresh_token'
+    })
+  }).then((res) => res.json());
+  localStorage.setItem('access_token', access_token);
+};
 
 const errorList = {
   large: '圖片檔案過大，僅限 1mb 以下檔案',
@@ -46,14 +45,18 @@ const sendImgToImgur = async (file) => {
   // formData.append('album', 'RLtC2t7');
   try {
     const result = await postFormData(formData);
-    const { link, status } = result.data;
+    const { link } = result.data;
     console.log('result', result);
     console.log('link', link);
-    if (status === 200) {
+    if (result.status === 200) {
       emit('setFile', link);
     }
   } catch (error) {
-    console.log('error-imgur', error);
+    const { status } = error.response;
+    console.log(`error--${status}`, 'error');
+    if (status === 403) {
+      getImgurToken();
+    }
   }
 };
 </script>
@@ -61,7 +64,7 @@ const sendImgToImgur = async (file) => {
 <template>
   <label
     for="fileUpload"
-    class="mt-5 block w-[128px] h-[32px] leading-7 bg-black text-white text-center"
+    class="mt-5 cursor-pointer block w-[128px] h-[32px] leading-7 bg-black text-white text-center"
   >
     上傳圖片
   </label>

@@ -7,7 +7,7 @@ import ToolBar from '../components/ToolBar.vue';
 <template>
 <Header />
 <div class="flex justify-between pt-2 sm:pt-12 w-full sm:w-[869px] m-auto">
-  <section class="p-3 w-full sm:w-[533px]">
+  <section class="w-full sm:w-[533px]">
     <router-view/>
     <ToolBar />
   </section>

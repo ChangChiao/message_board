@@ -25,8 +25,9 @@ service.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const { status } = error.response;
-    console.log(`error--${status}`, 'error');
+    // const { status } = error.response;
+    // console.log(`error--${status}`, 'error');
+    // eslint-disable-next-line prefer-promise-reject-errors
     return Promise.reject(error);
   }
 );

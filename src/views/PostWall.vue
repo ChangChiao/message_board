@@ -62,5 +62,5 @@ onMounted(() => {
   <template v-for="item in postList" :key="item._id">
     <Post :postData="item" />
   </template>
-  <NoRecord />
+  <NoRecord v-if='postList.length === 0' />
 </template>

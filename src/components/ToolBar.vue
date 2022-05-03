@@ -1,15 +1,15 @@
 <script setup>
-import { reactive } from 'vue';
+// import { reactive } from 'vue';
 import Bell from '../icons/Bell.vue';
 import Thumbs from '../icons/Thumbs.vue';
 import Plus from '../icons/Plus.vue';
 import Home from '../icons/Home.vue';
-const menuList = reactive([
+const menuList = [
   { icon: Home, path: '/postwall' },
   { icon: Bell, path: '/follow' },
   { icon: Thumbs, path: '/likes' },
   { icon: Plus, path: '/postadd' }
-]);
+];
 
 </script>
 <template>
@@ -18,7 +18,7 @@ const menuList = reactive([
       <li
         v-for="(item, i) in menuList"
         :key="i"
-        :class="[{'bg-primary text-white':i===3},'border-2 w-12 h-12 bg-white rounded-full flex items-center justify-center']"
+        :class="[{'bg-primary text-white': i === 3 },'border-2 w-12 h-12 bg-white rounded-full flex items-center justify-center']"
       >
         <router-link class="block" :to="item.path">
           <component :is="item.icon" />

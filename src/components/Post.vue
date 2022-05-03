@@ -28,8 +28,9 @@ const formateTime = (time) => {
     </div>
     <p class="py-2">{{ postData.content }}</p>
     <img
+    v-if='postData.cover'
       class="border-2 rounded-lg overflow-hidden"
-      src="../assets/images/image.png"
+      :src="postData.cover"
       alt=""
     />
   </div>
