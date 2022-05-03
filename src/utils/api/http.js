@@ -5,10 +5,10 @@ const service = axios.create({});
 service.interceptors.request.use(
   (config) => {
     console.log('config', config);
-    if (config.headers['Content-Type'] === 'multipart/form-data') {
+    const params = config.data?.params;
+    if (!params) {
       return config;
     }
-    const params = config.data.params;
     Object.keys(params).forEach((vo) => {
       if (!params[vo]) delete params[vo];
     });

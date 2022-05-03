@@ -1,14 +1,36 @@
-<script setup></script>
+<script setup>
+import dayjs from 'dayjs';
+import { defineProps } from 'vue';
+// eslint-disable-next-line no-unused-vars
+const props = defineProps({
+  postData: {
+    type: Object,
+    default: () => {}
+  }
+});
+const formateTime = (time) => {
+  return dayjs(time).format('YYYY/MM/DD HH:mm');
+};
+</script>
 <template>
-  <div class="box-rounded w-full smw-[533px] min-h-[133px] p-6">
+  <div class="box-rounded w-full smw-[533px] min-h-[133px] p-6 mb-6">
     <div class="flex">
-      <img src="../assets/images/user.png" alt="" />
+      <!-- <img src="../assets/images/user.png" alt="" /> -->
+      <img
+        class="avatar w-[50px] h-[50px]"
+        :src="postData.user?.avatar"
+        alt=""
+      />
       <div class="pl-3">
-        <p class="text-base text-bold">坡吉</p>
-        <p class="text-gray text-xs">2022/1/10 12:00</p>
+        <p class="text-base text-bold">{{ postData.user?.userName }}</p>
+        <p class="text-gray text-xs">{{ formateTime(postData.createdAt) }}</p>
       </div>
     </div>
-    <p class="py-2">我一定要成為很棒的國王!</p>
-    <img class="border-2 rounded-lg overflow-hidden" src="../assets/images/image.png" alt="" />
+    <p class="py-2">{{ postData.content }}</p>
+    <img
+      class="border-2 rounded-lg overflow-hidden"
+      src="../assets/images/image.png"
+      alt=""
+    />
   </div>
 </template>

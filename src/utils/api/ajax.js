@@ -17,11 +17,11 @@ const getAuthorizationImgHeader = () => {
 };
 
 export const getAPIData = (path, sendData = {}) => {
-  const config = {
-    headers: getAuthorizationHeader(),
-    params: sendData
-  };
-  return api.get(API_URL + path, config);
+  // const config = {
+  //   headers: getAuthorizationHeader(),
+  //   params: sendData
+  // };
+  return api.get(API_URL + path);
 };
 
 export const postAPIData = (path, sendData = {}) => {
