@@ -2,7 +2,8 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
-      body: ['Noto Sans TC', 'sans-serif']
+      body: ['Noto Sans TC', 'sans-serif'],
+      logo: ['Paytone One', 'sans-serif']
     },
     // borderRadius: {
     //   rectTest: '8px 8px 0px 0px'
