@@ -7,7 +7,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-localStorage.setItem('access_token', process.env.VUE_APP_IMGUR_ACCESS_TOKEN);
+if (!localStorage.getItem('access_token')) {
+  localStorage.setItem('access_token', process.env.VUE_APP_IMGUR_ACCESS_TOKEN);
+}
 
 library.add(faUserSecret);
 const app = createApp(App);
