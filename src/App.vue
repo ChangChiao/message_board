@@ -1,5 +1,15 @@
+<script setup>
+import { ref, provide } from 'vue';
+import Loading from './components/Loading.vue';
+const showLoading = ref(false);
+const controlLoading = (boolean) => {
+  showLoading.value = boolean;
+};
+provide('controlLoading', controlLoading);
+</script>
 <template>
-  <router-view/>
+  <router-view />
+  <Loading v-if='showLoading' />
 </template>
 
 <style>

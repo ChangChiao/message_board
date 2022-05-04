@@ -2,6 +2,10 @@
 import { reactive } from 'vue';
 import UploadFile from '../components/UploadFile.vue';
 import { postAPIData } from '../utils/api/ajax.js';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const initialState = {
   content: '',
   user: '626f7dfb64558c57ad26753c',
@@ -22,6 +26,7 @@ const addPost = async () => {
     const result = await postAPIData('/', { ...editContent });
     reset();
     console.log('result', result);
+    router.push('/');
   } catch (error) {
     console.log('error', error);
   }
@@ -59,7 +64,7 @@ const setFile = (url) => {
     <UploadFile @setError="setError" @setFile="setFile" />
     <div
       v-if="editContent.cover"
-      class="my-4 border-2 rounded-md overflow-hidden w-full h-[157px]"
+      class="my-4 border-2 rounded-md overflow-hidden w-full h-auto"
     >
       <img :src="editContent.cover" />
     </div>

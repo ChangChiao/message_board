@@ -1,5 +1,7 @@
 <script setup>
+import { inject } from 'vue';
 import { postFormData } from '../utils/api/ajax.js';
+const controlLoading = inject('controlLoading');
 const getImgurToken = async () => {
   // eslint-disable-next-line camelcase
   const { access_token } = await fetch('https://api.imgur.com/oauth2/token', {
@@ -43,6 +45,7 @@ const sendImgToImgur = async (file) => {
   formData.append('image', file);
   formData.append('type', 'file');
   // formData.append('album', 'RLtC2t7');
+  controlLoading(true);
   try {
     const result = await postFormData(formData);
     const { link } = result.data;
@@ -58,6 +61,7 @@ const sendImgToImgur = async (file) => {
       getImgurToken();
     }
   }
+  controlLoading(false);
 };
 </script>
 
