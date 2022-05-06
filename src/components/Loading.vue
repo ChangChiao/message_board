@@ -28,8 +28,8 @@
 
 .loading {
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: 50px;
+  height: 50px;
   border: 0.25rem solid rgba(255, 255, 255, 0.2);
   border-top-color: white;
   -webkit-animation: spin 1s infinite linear;

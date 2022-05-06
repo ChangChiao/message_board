@@ -1,12 +1,12 @@
 <script setup>
-import { onMounted, reactive, provide, watch } from 'vue';
+import { onMounted, reactive, provide, watch, inject } from 'vue';
 import { getAPIData } from '../utils/api/ajax.js';
 import Post from '../components/Post.vue';
 import SearchBar from '../components/SearchBar.vue';
 import Select from '../components/Select.vue';
 // import FollowStatus from '../components/FollowStatus.vue';
 import NoRecord from '../components/NoRecord.vue';
-
+const controlLoading = inject('controlLoading');
 const postList = reactive([]);
 
 const selectOption = [
@@ -24,6 +24,7 @@ const updateKeyword = (e) => {
 };
 
 const fetchData = async () => {
+  controlLoading(true);
   let queryString = `/?timeSort=${searchData.sort}`;
   searchData.keyword && (queryString += `&keyword=${searchData.keyword}`);
   try {
@@ -35,6 +36,7 @@ const fetchData = async () => {
   } catch (error) {
     console.log('error', error);
   }
+  controlLoading(false);
 };
 
 watch(
