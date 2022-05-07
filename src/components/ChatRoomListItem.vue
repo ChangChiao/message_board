@@ -1,6 +1,7 @@
 <script setup>
 import { defineProps, toRefs } from 'vue';
 import dayjs from 'dayjs';
+import eventBus from '../utils/eventBus';
 const props = defineProps({
   room: {
     type: Object,
@@ -13,6 +14,7 @@ const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD ');
 };
 const goChatRoom = () => {
+  eventBus.emit('handleRoom', true);
   console.log('channelId', channelId.value);
 };
 </script>
@@ -26,7 +28,11 @@ const goChatRoom = () => {
       <img class="w-10 h-10 avatar" :src="receiver.avatar" alt="avatar" />
       <div class="flex-1 pl-2">
         <p class="font-bold">{{ receiver.userName }}</p>
-        <p class="w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700">{{ message.content }}</p>
+        <p
+          class="w-[200px] md:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
+        >
+          {{ message.content }}
+        </p>
       </div>
       <!-- <img class="avatar w-10 h-10" :src="receiver.avatar" alt="" />
       <p>{{ receiver.userName }}</p> -->

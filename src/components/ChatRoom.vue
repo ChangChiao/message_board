@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 import ChatRoomMessage from './ChatRoomMessage.vue';
 import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
-
+import eventBus from '../utils/eventBus';
 const messageList = reactive([
   {
     _id: 1,
@@ -88,6 +88,10 @@ const messageList = reactive([
     createdAt: '2022-05-05T12:33:19.793Z'
   }
 ]);
+const closeRoom = () => {
+  console.log('closeRoom', closeRoom);
+  eventBus.emit('handleRoom', false);
+};
 </script>
 
 <template>
@@ -103,8 +107,8 @@ const messageList = reactive([
         />
         <span class="pl-4 font-bold">Dora</span>
       </div>
-      <span class="text-xs text-gray">對方正在輸入中...</span>
-      <Close class="cursor-pointer hover:opacity-50" />
+      <span @click="closeRoom" class="text-xs text-gray">對方正在輸入中...</span>
+      <Close class="cursor-pointer hover:opacity-50" @click="closeRoom" />
     </div>
     <div class="h-[350px] bg-slate-100 overflow-y-auto">
       <template v-for="message in messageList" :key="message._id">

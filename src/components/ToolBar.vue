@@ -4,16 +4,18 @@ import Bell from '../icons/Bell.vue';
 import Thumbs from '../icons/Thumbs.vue';
 import Plus from '../icons/Plus.vue';
 import Home from '../icons/Home.vue';
+import Send from '../icons/Send.vue';
 const menuList = [
   { icon: Home, path: '/postwall' },
   { icon: Bell, path: '/follow' },
   { icon: Thumbs, path: '/likes' },
-  { icon: Plus, path: '/postadd' }
+  { icon: Plus, path: '/postadd' },
+  { icon: Send, path: '/postadd' }
 ];
 
 </script>
 <template>
-  <div class="block sm:hidden border-2 bg-[#EFECE7] px-6 fixed bottom-10 rounded-[32px] w-11/12 h-[65px]">
+  <div class="block sm:hidden border-2 bg-[#EFECE7] px-6 fixed bottom-4 left-0 right-0 m-auto rounded-[32px] w-11/12 h-[65px]">
     <ul class="flex h-full justify-between items-center">
       <li
         v-for="(item, i) in menuList"
