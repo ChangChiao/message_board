@@ -1,7 +1,8 @@
 <script setup>
 import Header from '../components/Header.vue';
 import PostWallMenu from '../components/PostWallMenu.vue';
-import ToolBar from '../components/ToolBar.vue';
+import ChatRoom from '../components/ChatRoom.vue';
+import ChatRoomList from '../components/ChatRoomList.vue';
 </script>
 
 <template>
@@ -14,5 +15,8 @@ import ToolBar from '../components/ToolBar.vue';
   <aside class=" hidden sm:block">
     <PostWallMenu />
   </aside>
+  <chat-room />
+  <chat-room-list />
 </div>
+
 </template>
