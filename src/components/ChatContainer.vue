@@ -4,7 +4,6 @@ import ChatRoom from './ChatRoom.vue';
 import eventBus from '../utils/eventBus';
 const showRoom = ref(false);
 eventBus.on('handleRoom', (boolean) => {
-  console.log('handleRoom');
   showRoom.value = boolean;
 });
 

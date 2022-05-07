@@ -20,7 +20,6 @@ const isMobile = () => {
 };
 const goChatRoom = () => {
   console.log('channelId', channelId.value);
-  console.log('isMobile', isMobile());
   if (isMobile()) {
     router.push('/chatroom');
     return;

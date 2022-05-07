@@ -54,3 +54,5 @@ const chatList = reactive([
     </ul>
   </section>
 </template>
+
+<style></style>

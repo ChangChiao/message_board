@@ -4,7 +4,7 @@ import { getAPIData } from '../utils/api/ajax.js';
 import Post from '../components/Post.vue';
 import SearchBar from '../components/SearchBar.vue';
 import Select from '../components/Select.vue';
-// import FollowStatus from '../components/FollowStatus.vue';
+import FollowStatus from '../components/FollowStatus.vue';
 import NoRecord from '../components/NoRecord.vue';
 const controlLoading = inject('controlLoading');
 const postList = reactive([]);
@@ -50,13 +50,12 @@ provide('updateKeyword', updateKeyword);
 provide('searchData', searchData);
 provide('fetchData', fetchData);
 onMounted(() => {
-  console.log('aaa', postList);
   fetchData();
 });
 </script>
 
 <template>
-  <!-- <FollowStatus /> -->
+  <FollowStatus />
   <div class="sm:flex justify-between">
     <Select v-model="searchData.sort" :option="selectOption" />
     <SearchBar />

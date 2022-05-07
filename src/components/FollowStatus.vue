@@ -9,6 +9,7 @@
       <p>阿阿</p>
       <p>8777人追蹤</p>
     </div>
+    <button class="button text-black bg-[#EFECE7] w-32 h-9 mr-2">發送訊息</button>
     <button class="button text-black bg-[#EFECE7] w-32 h-9">取消追蹤</button>
   </div>
 </template>
