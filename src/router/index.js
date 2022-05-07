@@ -6,6 +6,7 @@ import FollowList from '../views/FollowList.vue';
 import UserInfo from '../views/UserInfo.vue';
 import PoseLikeList from '../views/PoseLikeList.vue';
 import PostAdd from '../views/PostAdd.vue';
+import ChatRoomList from '../views/ChatRoomList';
 const routes = [
   {
     path: '/login',
@@ -41,6 +42,11 @@ const routes = [
         path: '/postadd',
         name: 'PostAdd',
         component: PostAdd
+      },
+      {
+        path: '/chatroomlist',
+        name: 'ChatRoomList',
+        component: ChatRoomList
       }
     ]
   }

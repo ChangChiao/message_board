@@ -1,3 +1,3 @@
 import useValidateStore from './validate';
-
-export { useValidateStore };
+import useUserStore from './user';
+export { useValidateStore, useUserStore };

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export default defineStore('groupPath', {
+export default defineStore('vaildate', {
   state: () => ({
     validateList: [],
     errorFlag: false
