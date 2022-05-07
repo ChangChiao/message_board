@@ -7,11 +7,17 @@ import UserInfo from '../views/UserInfo.vue';
 import PoseLikeList from '../views/PoseLikeList.vue';
 import PostAdd from '../views/PostAdd.vue';
 import ChatRoomList from '../views/ChatRoomList';
+import ChatRoom from '../views/ChatRoomView';
 const routes = [
   {
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/chatroom',
+    name: 'ChatRoom',
+    component: ChatRoom
   },
   {
     path: '/',

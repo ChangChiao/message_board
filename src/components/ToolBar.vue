@@ -6,11 +6,11 @@ import Plus from '../icons/Plus.vue';
 import Home from '../icons/Home.vue';
 import Send from '../icons/Send.vue';
 const menuList = [
-  { icon: Home, path: '/postwall' },
+  { icon: Home, path: '/' },
   { icon: Bell, path: '/follow' },
   { icon: Thumbs, path: '/likes' },
   { icon: Plus, path: '/postadd' },
-  { icon: Send, path: '/postadd' }
+  { icon: Send, path: '/chatroomlist' }
 ];
 
 </script>

@@ -21,7 +21,6 @@ const formateTime = (time) => {
   return dayjs(time).format('HH:mm');
 };
 
-console.log('isSelf', isSelf);
 </script>
 
 <template>

@@ -3,7 +3,10 @@ import { reactive } from 'vue';
 import ChatRoomMessage from './ChatRoomMessage.vue';
 import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
+import Back from '../icons/Back.vue';
 import eventBus from '../utils/eventBus';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const messageList = reactive([
   {
     _id: 1,
@@ -92,14 +95,21 @@ const closeRoom = () => {
   console.log('closeRoom', closeRoom);
   eventBus.emit('handleRoom', false);
 };
+
+const toPrevPage = () => {
+  router.go(-1);
+};
 </script>
 
 <template>
   <div
-    class="fixed border-2 bottom-0 right-10 w-[338px] h-[455px] rounded-tl-lg rounded-tr-lg"
+    class="sm:fixed sm:border-2 bottom-0 right-10 w-screen sm:w-[338px] h-screen sm:h-[455px] rounded-tl-lg rounded-tr-lg"
   >
-    <div class="h-14 flex px-4 py-2 justify-between items-center border-b-2">
+    <div
+      class="h-14 flex px-2 sm:px-4 py-2 justify-between items-center border-b-2"
+    >
       <div class="flex items-center">
+        <Back @click="toPrevPage" class="block sm:hidden w-8 h-8 mr-2" />
         <img
           class="avatar w-10 h-10"
           src="https://i.pravatar.cc/150?img=19"
@@ -107,10 +117,15 @@ const closeRoom = () => {
         />
         <span class="pl-4 font-bold">Dora</span>
       </div>
-      <span @click="closeRoom" class="text-xs text-gray">對方正在輸入中...</span>
-      <Close class="cursor-pointer hover:opacity-50" @click="closeRoom" />
+      <span @click="closeRoom" class="text-xs text-gray"
+        >對方正在輸入中...</span
+      >
+      <Close
+        class="cursor-pointer hidden sm:block hover:opacity-50"
+        @click="closeRoom"
+      />
     </div>
-    <div class="h-[350px] bg-slate-100 overflow-y-auto">
+    <div class="inner sm:h-[350px] bg-slate-100 overflow-y-auto">
       <template v-for="message in messageList" :key="message._id">
         <chat-room-message :message="message" />
       </template>
@@ -118,3 +133,17 @@ const closeRoom = () => {
     <chat-room-input-box />
   </div>
 </template>
+
+<style scoped>
+.inner {
+  height: calc(100vh - 56px - 48px);
+}
+@supports (-webkit-touch-callout: none) {
+  .h-screen {
+    height: -webkit-fill-available;
+  }
+  .inner {
+    height: calc(-webkit-fill-available - 56px - 48px);
+  }
+}
+</style>

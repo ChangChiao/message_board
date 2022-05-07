@@ -2,6 +2,8 @@
 import { defineProps, toRefs } from 'vue';
 import dayjs from 'dayjs';
 import eventBus from '../utils/eventBus';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const props = defineProps({
   room: {
     type: Object,
@@ -13,9 +15,17 @@ const { receiver, channelId, message } = toRefs(props.room);
 const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD ');
 };
+const isMobile = () => {
+  return window.screen.width < 640;
+};
 const goChatRoom = () => {
-  eventBus.emit('handleRoom', true);
   console.log('channelId', channelId.value);
+  console.log('isMobile', isMobile());
+  if (isMobile()) {
+    router.push('/chatroom');
+    return;
+  }
+  eventBus.emit('handleRoom', true);
 };
 </script>
 
@@ -29,7 +39,7 @@ const goChatRoom = () => {
       <div class="flex-1 pl-2">
         <p class="font-bold">{{ receiver.userName }}</p>
         <p
-          class="w-[200px] md:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
+          class="w-[200px] sm:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
         >
           {{ message.content }}
         </p>

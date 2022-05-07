@@ -8,7 +8,7 @@ import ToolBar from '../components/ToolBar';
 
 <template>
 <Header />
-<div class="flex justify-between pt-2 sm:pt-12 w-full sm:w-[869px] m-auto">
+<div class="flex justify-between sm:pt-16 pt-2 px-2  w-full sm:w-[869px] m-auto">
   <section class="w-full sm:w-[533px]">
     <router-view/>
     <ToolBar />
