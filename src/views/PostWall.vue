@@ -56,7 +56,7 @@ onMounted(() => {
 
 <template>
   <FollowStatus />
-  <div class="sm:flex justify-between">
+  <div class="md:flex justify-between">
     <Select v-model="searchData.sort" :option="selectOption" />
     <SearchBar />
   </div>

@@ -8,12 +8,12 @@ import ToolBar from '../components/ToolBar';
 
 <template>
 <Header />
-<div class="flex justify-between sm:pt-16 pt-2 px-2  w-full sm:w-[869px] m-auto">
-  <section class="w-full sm:w-[533px]">
+<div class="flex justify-between md:pt-16 pt-2 px-2  w-full md:w-[869px] m-auto">
+  <section class="w-full md:w-[533px]">
     <router-view/>
     <ToolBar />
   </section>
-  <aside class=" hidden sm:block">
+  <aside class=" hidden md:block">
     <PostWallMenu />
   </aside>
   <chat-container />

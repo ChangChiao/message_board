@@ -16,7 +16,7 @@ const handelChange = (event) => {
 
 option
 <template>
-  <select :value='modelValue' @change='handelChange' class="border-2 pl-2 w-full sm:w-[156px] h-[46px]" name="" id="">
+  <select :value='modelValue' @change='handelChange' class="border-2 pl-2 w-full md:w-[156px] h-[46px]" name="" id="">
     <option v-for="item in option" :value='item.key' :key="item.key">
       {{ item.content }}
     </option>

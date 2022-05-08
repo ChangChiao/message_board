@@ -13,12 +13,12 @@ const searchData = inject('searchData');
 
 <template>
   <div
-    class="pl-2 border-2 flex mt-4 sm:mt-0 justify-between border-black w-full sm:w-[356px] h-[46px] mb-4"
+    class="pl-2 border-2 flex mt-4 md:mt-0 justify-between border-black w-full md:w-[356px] h-[46px] mb-4"
   >
     <input
       :value="searchData.keyword"
       @change="updateKeyword"
-      class="block w-100% sm:w-[280px]"
+      class="block w-100% md:w-[280px]"
       type="text"
       placeholder="搜尋貼文"
     />

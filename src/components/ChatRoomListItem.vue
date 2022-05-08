@@ -16,7 +16,7 @@ const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD ');
 };
 const isMobile = () => {
-  return window.screen.width < 640;
+  return document.body.clientWidth < 768;
 };
 const goChatRoom = () => {
   console.log('channelId', channelId.value);
@@ -38,7 +38,7 @@ const goChatRoom = () => {
       <div class="flex-1 pl-2">
         <p class="font-bold">{{ receiver.userName }}</p>
         <p
-          class="w-[200px] sm:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
+          class="w-[200px] md:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
         >
           {{ message.content }}
         </p>

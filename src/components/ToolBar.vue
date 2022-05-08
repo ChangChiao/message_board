@@ -15,7 +15,7 @@ const menuList = [
 
 </script>
 <template>
-  <div class="block sm:hidden border-2 bg-[#EFECE7] px-6 fixed bottom-4 left-0 right-0 m-auto rounded-[32px] w-11/12 h-[65px]">
+  <div class="block md:hidden border-2 bg-[#EFECE7] px-6 fixed bottom-4 left-0 right-0 m-auto rounded-[32px] w-11/12 h-[65px]">
     <ul class="flex h-full justify-between items-center">
       <li
         v-for="(item, i) in menuList"

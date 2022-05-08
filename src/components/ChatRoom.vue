@@ -193,13 +193,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="sm:fixed sm:border-2 bottom-0 right-10 w-screen sm:w-[338px] h-screen sm:h-[455px] rounded-tl-lg rounded-tr-lg"
+    class="md:fixed md:border-2 bottom-0 right-10 w-screen md:w-[338px] h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg"
   >
     <div
-      class="h-14 flex px-2 sm:px-4 py-2 justify-between items-center border-b-2"
+      class="h-14 flex px-2 md:px-4 py-2 justify-between items-center border-b-2"
     >
       <div class="flex items-center">
-        <Back @click="toPrevPage" class="block sm:hidden w-8 h-8 mr-2" />
+        <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
         <img
           class="avatar w-10 h-10"
           src="https://i.pravatar.cc/150?img=19"
@@ -211,7 +211,7 @@ onBeforeUnmount(() => {
         >對方正在輸入中...</span
       >
       <Close
-        class="cursor-pointer hidden sm:block hover:opacity-50"
+        class="cursor-pointer hidden md:block hover:opacity-50"
         @click="closeRoom"
       />
     </div>
