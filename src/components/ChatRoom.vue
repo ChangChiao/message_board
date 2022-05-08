@@ -6,7 +6,14 @@ import Close from '../icons/Close.vue';
 import Back from '../icons/Back.vue';
 import eventBus from '../utils/eventBus';
 import { useRouter } from 'vue-router';
+import { io } from 'socket.io-client';
 const router = useRouter();
+
+const socket = io('http://localhost:3008' + '/socket.io/');
+socket.on('join', (msg) => {
+  console.log('msg', msg);
+});
+
 const messageList = reactive([
   {
     _id: 1,
