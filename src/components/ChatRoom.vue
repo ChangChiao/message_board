@@ -9,9 +9,15 @@ import { useRouter } from 'vue-router';
 import { io } from 'socket.io-client';
 const router = useRouter();
 
-const socket = io('http://localhost:3008' + '/socket.io/');
-socket.on('join', (msg) => {
-  console.log('msg', msg);
+const socket = io('http://localhost:3008');
+// const socket = io('http://localhost:3008' + '/socket.io/');
+socket.on('connect', () => {
+  socket.emit('no no no', 1122);
+  console.log('connect'); // true
+});
+
+socket.on('receive server', (msg) => {
+  console.log('receive server', msg);
 });
 
 const messageList = reactive([
