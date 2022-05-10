@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted, onBeforeUnmount } from 'vue';
+import { nextTick, reactive, onMounted, onBeforeUnmount } from 'vue';
 import ChatRoomMessage from './ChatRoomMessage.vue';
 import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
@@ -9,16 +9,38 @@ import { useRouter } from 'vue-router';
 import { io } from 'socket.io-client';
 const router = useRouter();
 
+// socket初始化
 const socket = io('http://localhost:3008');
 // const socket = io('http://localhost:3008' + '/socket.io/');
+// 建立連線
 socket.on('connect', () => {
   socket.emit('no no no', 1122);
   console.log('connect'); // true
 });
 
-socket.on('receive server', (msg) => {
-  console.log('receive server', msg);
+socket.on('receiveMsg', (msg) => {
+  console.log('接收到別人傳的訊息', msg);
+  const obj = {
+    _id: 1,
+    user: {
+      userName: 'Dora',
+      _id: '2266'
+    },
+    userName: 'Dora',
+    content: msg,
+    createdAt: Date.now()
+  };
+  messageList.push(obj);
 });
+
+const sendMessage = (msg) => {
+  socket.emit('sendMsg', msg || '大可不必');
+  scrollBottom();
+};
+
+const scrollBottom = async () => {
+  await nextTick();
+};
 
 const messageList = reactive([
   {
@@ -233,7 +255,7 @@ onBeforeUnmount(() => {
         <chat-room-message :message="message" />
       </template>
     </div>
-    <chat-room-input-box />
+    <chat-room-input-box @sendMessage="sendMessage" />
   </div>
 </template>
 
