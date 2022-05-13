@@ -216,9 +216,13 @@ const toPrevPage = () => {
   router.go(-1);
 };
 
+const isMobile = () => {
+  return document.body.clientWidth < 768;
+};
+
 onMounted(() => {
   // 鎖ios橡皮筋效果
-  document.body.style = 'overflow: hidden;position:fixed';
+  isMobile() && (document.body.style = 'overflow: hidden;position:fixed');
 });
 
 onBeforeUnmount(() => {
