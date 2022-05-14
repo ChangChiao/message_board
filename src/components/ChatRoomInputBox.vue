@@ -1,7 +1,19 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineEmits } from 'vue';
 import Send from '@/icons/Send.vue';
 const inputBox = ref(null);
+
+const emit = defineEmits(['sendMessage']);
+const sendMessage = () => {
+  const value = inputBox.value.innerText;
+  if (value === '') return;
+  if (value.length > 100) {
+    console.log('輸入內容長度超過上限');
+    return;
+  }
+  emit('sendMessage', value);
+  inputBox.value.innerText = '';
+};
 
 onMounted(() => {
   const keyEvent = new KeyboardEvent('keyup', {
@@ -10,6 +22,7 @@ onMounted(() => {
   inputBox.value.dispatchEvent(keyEvent);
   inputBox.value.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') {
+      sendMessage();
       console.log('doSomething');
     }
     console.log('content', e.target.innerText);
@@ -30,6 +43,6 @@ onMounted(() => {
       tabindex="0"
       ref="inputBox"
     ></div>
-    <Send class="text-white cursor-pointer" />
+    <Send @click="sendMessage" class="text-white cursor-pointer" />
   </div>
 </template>
