@@ -1,6 +1,11 @@
 import api from './http';
 import { API_URL, IMGUR_URL } from '../../global/constant';
-const getAuthorizationHeader = () => {};
+const getAuthorizationHeader = () => {
+  const token = localStorage.getItem('token');
+  return {
+    authorization: `Bearer ${token}`
+  };
+};
 
 const getAuthorizationImgHeader = () => {
   // eslint-disable-next-line camelcase
@@ -31,12 +36,3 @@ export const postFormData = (sendData = {}) => {
   console.log('#####IMGUR', sendData, headers);
   return api.post(IMGUR_URL, sendData, { headers });
 };
-
-// export const postFormData2 = (sendData = {}) => {
-//   // const config = {
-//   //   headers: getAuthorizationImgHeader(),
-//   //   params: sendData
-//   // };
-//   console.log('#####RERTTR', IMGUR_URL, sendData);
-//   return fetch(IMGUR_URL, { method: 'post', body: sendData });
-// };

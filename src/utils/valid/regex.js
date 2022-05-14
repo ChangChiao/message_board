@@ -3,12 +3,13 @@ export default {
     return value !== '' && value !== undefined && value !== null;
   },
   userName (value) {
-    return /[a-zA-Z0-9]{6,12}$/.test(value);
+    return /[a-zA-Z0-9]{1,12}$/.test(value);
   },
   password (value) {
-    return /[a-zA-Z0-9]{6,12}$/.test(value);
+    return /[a-zA-Z0-9]{8,16}$/.test(value);
   },
   email (value) {
-    return /[a-zA-Z0-9]{6,12}$/.test(value);
+    // eslint-disable-next-line no-useless-escape
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
   }
 };

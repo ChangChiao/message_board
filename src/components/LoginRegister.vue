@@ -1,12 +1,15 @@
 <script setup>
 import { reactive, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
 import Input from '../components/Input.vue';
+import { postAPIData } from '@/utils/api/ajax';
 import { useValidateStore } from '@/store';
 import { storeToRefs } from 'pinia';
 const validateStore = useValidateStore();
 const { validateList } = storeToRefs(validateStore);
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['setComp']);
+const router = useRouter();
 
 const setComp = () => {
   emit('setComp', 0);
@@ -17,19 +20,26 @@ const loginData = reactive({
   email: '',
   password: ''
 });
-const handleSubmit = () => {
+const handleSubmit = async () => {
   // eslint-disable-next-line no-unused-vars
   if (validateList.value.length !== 0) {
     validateStore.updateErrorFlag(true);
     return;
-  };
+  }
+  try {
+    const res = await postAPIData('/user/sign_up', loginData);
+    const { status, user: { token } } = res;
+    status === 'success' && localStorage.setItem('token', token);
+    false && router.push('/');
+  } catch (error) {
+    console.log('error', error);
+  }
 };
 
 onBeforeUnmount(() => {
   validateStore.resetVaild();
 });
 </script>
-
 <template>
   <div class="text-center">
     <Input
@@ -44,8 +54,15 @@ onBeforeUnmount(() => {
       validId="email"
       placeholder="Email"
     />
-    <Input v-model.trim="loginData.password" :vaildField="['required', 'password']" validId="password" placeholder="Password" />
-    <button @click="handleSubmit" class="mt-6 w-[374px] h-[54px] button block">註冊</button>
-    <a class="text-black pt-3 block" @click.prevent="setComp">登入</a>
+    <Input
+      v-model.trim="loginData.password"
+      :vaildField="['required', 'password']"
+      validId="password"
+      placeholder="Password"
+    />
+    <button @click="handleSubmit" class="mt-6 w-[374px] h-[54px] button block">
+      註冊
+    </button>
+    <a class="text-black pt-3 block cursor-pointer" @click.prevent="setComp">登入</a>
   </div>
 </template>

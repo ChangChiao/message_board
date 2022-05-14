@@ -28,7 +28,7 @@ const fetchData = async () => {
   let queryString = `/?timeSort=${searchData.sort}`;
   searchData.keyword && (queryString += `&keyword=${searchData.keyword}`);
   try {
-    const result = await getAPIData(queryString);
+    const result = await getAPIData('/posts', queryString);
     const { status, posts } = result;
     postList.length = 0;
     status === 'success' && Object.assign(postList, posts);
@@ -63,5 +63,5 @@ onMounted(() => {
   <template v-for="item in postList" :key="item._id">
     <Post :postData="item" />
   </template>
-  <NoRecord v-if='postList.length === 0' />
+  <NoRecord v-if="postList.length === 0" />
 </template>

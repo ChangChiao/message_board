@@ -23,7 +23,7 @@ const props = defineProps({
   },
   maxLength: {
     type: Number,
-    default: 12
+    default: 30
   }
 });
 const validateStore = useValidateStore();
@@ -72,5 +72,5 @@ onMounted(() => {});
   <div class="border-2 my-2 w-[373px] h-[51px] flex items-center bg-white border-black p-4">
     <input :maxlength="maxLength" :value="modelValue" @input="handelChange" class="w-full h-7 text-gray-400" :placeholder="placeholder" :type="type" />
   </div>
-  <p v-if="errorFlag" class="text-red">{{ error[vaildFail] }}</p>
+  <p v-if="errorFlag" class="text-red text-left">{{ error[vaildFail] }}</p>
 </template>

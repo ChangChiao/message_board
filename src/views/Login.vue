@@ -14,8 +14,8 @@ const setComp = (type) => {
     <div class="flex flex-col items-center pl-6">
       <img src="../assets/images/MetaWall.png" alt="">
       <p class="font-bold text-2xl pb-6">到元宇宙展開全新社交圈</p>
-      <LoginSign v-if="nowComp === 0" />
-      <LoginRegister v-else />
+      <LoginSign @setComp="setComp" v-if="nowComp === 0" />
+      <LoginRegister @setComp="setComp" v-else />
     </div>
   </section>
 </template>
