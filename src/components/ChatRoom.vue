@@ -10,7 +10,7 @@ import { io } from 'socket.io-client';
 const router = useRouter();
 
 // socket初始化
-const socket = io('http://localhost:3008');
+const socket = io('http://localhost:3008/chat');
 // const socket = io('http://localhost:3008' + '/socket.io/');
 // 建立連線
 socket.on('connect', () => {
