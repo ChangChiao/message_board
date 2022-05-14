@@ -34,7 +34,12 @@ socket.on('receiveMsg', (msg) => {
 });
 
 const sendMessage = (msg) => {
-  socket.emit('sendMsg', msg || '大可不必');
+  const sendMsg = {
+    roomId: '627fd2578f4a76df3d62c0e2',
+    message: msg,
+    sender: '627f21437c384160be65d10d'
+  };
+  socket.emit('sendMsg', sendMsg || {});
   scrollBottom();
 };
 
