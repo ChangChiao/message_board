@@ -31,6 +31,11 @@ export const postAPIData = (path, sendData = {}) => {
   return api.post(API_URL + path, sendData, { headers });
 };
 
+export const patchAPIData = (path, sendData = {}) => {
+  const headers = getAuthorizationHeader();
+  return api.patch(API_URL + path, sendData, { headers });
+};
+
 export const postFormData = (sendData = {}) => {
   const headers = getAuthorizationImgHeader();
   console.log('#####IMGUR', sendData, headers);

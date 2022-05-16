@@ -27,10 +27,16 @@ const handleSubmit = async () => {
     return;
   }
   try {
-    const res = await postAPIData('/user/sign_up', loginData);
-    const { status, user: { token } } = res;
-    status === 'success' && localStorage.setItem('token', token);
-    false && router.push('/');
+    const res = await postAPIData('/users/sign_up', loginData);
+    const {
+      status,
+      user: { token, userName }
+    } = res;
+    if (status === 'success') {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', userName);
+    }
+    router.push('/');
   } catch (error) {
     console.log('error', error);
   }
@@ -58,11 +64,14 @@ onBeforeUnmount(() => {
       v-model.trim="loginData.password"
       :vaildField="['required', 'password']"
       validId="password"
+      type="password"
       placeholder="Password"
     />
     <button @click="handleSubmit" class="mt-6 w-[374px] h-[54px] button block">
       註冊
     </button>
-    <a class="text-black pt-3 block cursor-pointer" @click.prevent="setComp">登入</a>
+    <a class="text-black pt-3 block cursor-pointer" @click.prevent="setComp"
+      >登入</a
+    >
   </div>
 </template>

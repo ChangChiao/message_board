@@ -1,4 +1,6 @@
 import { createApp } from 'vue';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 import App from './App.vue';
 import router from './router';
 import './index.css';
@@ -12,4 +14,4 @@ if (!localStorage.getItem('access_token')) {
 library.add(faUserSecret);
 const app = createApp(App);
 app.component('font-awesome-icon', FontAwesomeIcon);
-app.use(router).use(createPinia()).mount('#app');
+app.use(router).use(createPinia()).use(Toast).mount('#app');

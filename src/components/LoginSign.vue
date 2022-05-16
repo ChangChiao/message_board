@@ -28,13 +28,16 @@ const handleSubmit = async () => {
     return;
   }
   try {
-    const res = await postAPIData('/user/sign_in', loginData);
+    const res = await postAPIData('/users/sign_in', loginData);
     const {
       status,
-      user: { token }
+      user: { token, userName }
     } = res;
-    status === 'success' && localStorage.setItem('token', token);
-    false && router.push('/');
+    if (status === 'success') {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', userName);
+    }
+    router.push('/');
   } catch (error) {
     console.log('error', error);
   }
@@ -57,6 +60,7 @@ onBeforeUnmount(() => {
       v-model.trim="loginData.password"
       :vaildField="['required', 'password']"
       validId="password"
+      type="password"
       placeholder="Password"
     />
     <!-- <p class="text-red">帳號或密碼錯誤，請重新輸入！</p> -->
