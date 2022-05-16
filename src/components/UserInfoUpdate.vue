@@ -4,11 +4,16 @@ import { reactive } from 'vue';
 import UploadFile from '../components/UploadFile.vue';
 import { patchAPIData } from '../utils/api/ajax.js';
 import Input from '../components/Input.vue';
+import { storeToRefs } from 'pinia';
+import { useValidateStore, useUserStore } from '@/store';
+const validateStore = useValidateStore();
+const useStore = useUserStore();
+const { validateList } = storeToRefs(validateStore);
 
 const toast = useToast();
 const initialState = {
   userName: '',
-  gender: 1,
+  gender: 'male',
   avatar: ''
 };
 
@@ -38,11 +43,18 @@ const setFile = (url) => {
 };
 
 const updateInfo = async () => {
+  if (validateList.value.length !== 0) {
+    validateStore.updateErrorFlag(true);
+    // console.error('validateList.value', validateList.value);
+    return;
+  }
   try {
     const result = await patchAPIData('/users/profile', { ...editContent });
     reset();
     const { status, user } = result;
-    status === 'success' && localStorage.setItem('user', JSON.stringify(user));
+    if (status === 'success') {
+      useStore.updateUser(user);
+    }
     toast.success('修改成功');
   } catch (error) {
     console.log('error', error);
@@ -59,14 +71,29 @@ const updateInfo = async () => {
     <UploadFile @setError="setError" @setFile="setFile" />
     <div class="pt-2">
       <h3 class="">暱稱</h3>
-      <Input />
+      <Input
+        v-model.trim="editContent.userName"
+        :vaildField="['required', 'userName']"
+        validId="userName"
+      />
     </div>
     <div class="w-full">
       <h3 class="">性別</h3>
       <div class="flex items-center">
-        <input id="male" value="1" type="radio" v-model="editContent.gender" checked />
+        <input
+          id="male"
+          value="male"
+          type="radio"
+          v-model="editContent.gender"
+          checked
+        />
         <label class="pl-2 pr-4" for="male">男性 </label>
-        <input id="female" value="0" type="radio" v-model="editContent.gender" />
+        <input
+          id="female"
+          value="female"
+          type="radio"
+          v-model="editContent.gender"
+        />
         <label class="pl-2 pr-4" for="female">女性</label>
       </div>
     </div>

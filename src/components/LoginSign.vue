@@ -3,10 +3,12 @@ import { reactive, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import Input from '../components/Input.vue';
 import { storeToRefs } from 'pinia';
-import { useValidateStore } from '@/store';
+import { useValidateStore, useUserStore } from '@/store';
 import { postAPIData } from '@/utils/api/ajax';
 const validateStore = useValidateStore();
+const useStore = useUserStore();
 const { validateList } = storeToRefs(validateStore);
+
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['setComp']);
 const router = useRouter();
@@ -35,7 +37,7 @@ const handleSubmit = async () => {
     } = res;
     if (status === 'success') {
       localStorage.setItem('token', token);
-      localStorage.setItem('user', userName);
+      useStore.updateUser({ userName });
     }
     router.push('/');
   } catch (error) {

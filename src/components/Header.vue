@@ -1,9 +1,11 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-const userName = ref(null);
-onMounted(() => {
-  userName.value = localStorage.getItem('user');
-});
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store';
+const useStore = useUserStore();
+const {
+  user
+} = storeToRefs(useStore);
+console.log('userName', user.value.userName);
 </script>
 <template>
   <header class="bg-white border-b-2 p-4">
@@ -15,7 +17,7 @@ onMounted(() => {
           src="../assets/images/user.png"
           alt=""
         />
-        <span class="text-bold font-logo pl-2">{{userName}}</span>
+        <span class="text-bold font-logo pl-2">{{ user.userName }}</span>
       </div>
     </div>
   </header>

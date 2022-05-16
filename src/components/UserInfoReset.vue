@@ -15,10 +15,13 @@ const resetPassword = async () => {
     return;
   }
   try {
-    const res = await postAPIData('/user/updatePassword', updateData);
-    const { status, user } = res;
+    const res = await postAPIData('/users/update_password', updateData);
+    const {
+      status,
+      user: { token }
+    } = res;
     if (status === 'success') {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
       toast.success('修改成功');
       updateData.password = '';
       updateData.confirmPassword = '';

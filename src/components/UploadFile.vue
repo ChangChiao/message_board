@@ -1,6 +1,8 @@
 <script setup>
+import { useToast } from 'vue-toastification';
 import { inject } from 'vue';
 import { postFormData } from '../utils/api/ajax.js';
+const toast = useToast();
 const controlLoading = inject('controlLoading');
 const getImgurToken = async () => {
   // eslint-disable-next-line camelcase
@@ -55,8 +57,9 @@ const sendImgToImgur = async (file) => {
       emit('setFile', link);
     }
   } catch (error) {
-    const { status } = error.response;
-    console.log(`error--${status}`, 'error');
+    const { status, data } = error.response;
+    console.log(`error--${status}`, 'error', data);
+    toast.error(data?.data?.error);
     if (status === 403) {
       getImgurToken();
     }
