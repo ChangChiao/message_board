@@ -51,8 +51,6 @@ const sendImgToImgur = async (file) => {
   try {
     const result = await postFormData(formData);
     const { link } = result.data;
-    console.log('result', result);
-    console.log('link', link);
     if (result.status === 200) {
       emit('setFile', link);
     }

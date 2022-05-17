@@ -8,7 +8,6 @@ const router = useRouter();
 
 const initialState = {
   content: '',
-  user: '626f7dfb64558c57ad26753c',
   cover: ''
 };
 
@@ -23,9 +22,8 @@ const imageError = reactive({
 
 const addPost = async () => {
   try {
-    const result = await postAPIData('/post', { ...editContent });
+    await postAPIData('/post', { ...editContent });
     reset();
-    console.log('result', result);
     router.push('/');
   } catch (error) {
     console.log('error', error);

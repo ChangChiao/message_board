@@ -29,7 +29,7 @@ service.interceptors.response.use(
     // console.log(`error--${status}`, 'error');
     // eslint-disable-next-line prefer-promise-reject-errors
     const errorMsg = error.response?.data.message?.message;
-    toast.error(errorMsg);
+    errorMsg && toast.error(errorMsg);
     return Promise.reject(error);
   }
 );

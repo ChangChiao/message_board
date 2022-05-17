@@ -32,7 +32,6 @@ const fetchData = async () => {
     const { status, posts } = result;
     postList.length = 0;
     status === 'success' && Object.assign(postList, posts);
-    console.log('fetch Data', result);
   } catch (error) {
     console.log('error', error);
   }

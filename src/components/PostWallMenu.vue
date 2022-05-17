@@ -12,7 +12,7 @@ const { user } = storeToRefs(useStore);
   <div class="box w-[309px] p-8">
     <button class="button w-[261px] h-[54px]">
       <router-link
-        class="flex items-center justify-center w-full"
+        class="block w-full"
         to="/postadd"
       >
         張貼動態
@@ -23,7 +23,7 @@ const { user } = storeToRefs(useStore);
         <router-link class="flex items-center w-full" to="/userInfo">
           <img
             class="avatar w-[50px] h-[50px]"
-            src="../assets/images/user.png"
+            :src="user.avatar"
             alt=""
           />
           <span class="pl-4 text-bold">{{ user.userName }}</span>

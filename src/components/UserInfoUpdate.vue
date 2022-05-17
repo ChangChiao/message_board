@@ -1,6 +1,6 @@
 <script setup>
+import { reactive, watch } from 'vue';
 import { useToast } from 'vue-toastification';
-import { reactive } from 'vue';
 import UploadFile from '../components/UploadFile.vue';
 import { patchAPIData } from '../utils/api/ajax.js';
 import Input from '../components/Input.vue';
@@ -9,7 +9,7 @@ import { useValidateStore, useUserStore } from '@/store';
 const validateStore = useValidateStore();
 const useStore = useUserStore();
 const { validateList } = storeToRefs(validateStore);
-
+const { user } = storeToRefs(useStore);
 const toast = useToast();
 const initialState = {
   userName: '',
@@ -60,14 +60,20 @@ const updateInfo = async () => {
     console.log('error', error);
   }
 };
+
+watch(
+  user,
+  () => {
+    editContent.avatar = user?.value.avatar;
+    editContent.userName = user?.value.userName;
+    editContent.gender = user?.value.gender;
+  },
+  { immediate: true }
+);
 </script>
 <template>
   <div class="flex flex-col items-center">
-    <img
-      class="avatar w-[107px] h-[107px]"
-      src="../assets/images/user_default.png"
-      alt=""
-    />
+    <img class="avatar w-[107px] h-[107px]" :src="editContent.avatar" alt="" />
     <UploadFile @setError="setError" @setFile="setFile" />
     <div class="pt-2">
       <h3 class="">暱稱</h3>
