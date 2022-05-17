@@ -13,7 +13,7 @@ const { user } = storeToRefs(useStore);
 const toast = useToast();
 const initialState = {
   userName: '',
-  gender: 'male',
+  gender: '',
   avatar: ''
 };
 
@@ -40,6 +40,7 @@ const reset = () => {
 const setFile = (url) => {
   console.log('setFile', url);
   editContent.avatar = url;
+  updateInfo();
 };
 
 const updateInfo = async () => {
@@ -51,9 +52,9 @@ const updateInfo = async () => {
   try {
     const result = await patchAPIData('/users/profile', { ...editContent });
     reset();
-    const { status, user } = result;
+    const { status, user: updatedUser } = result;
     if (status === 'success') {
-      useStore.updateUser(user);
+      useStore.updateUser(updatedUser);
     }
     toast.success('修改成功');
   } catch (error) {
@@ -67,6 +68,9 @@ watch(
     editContent.avatar = user?.value.avatar;
     editContent.userName = user?.value.userName;
     editContent.gender = user?.value.gender;
+    setTimeout(() => {
+      console.log('editContent.gender', editContent.gender);
+    }, 2000);
   },
   { immediate: true }
 );
@@ -91,7 +95,6 @@ watch(
           value="male"
           type="radio"
           v-model="editContent.gender"
-          checked
         />
         <label class="pl-2 pr-4" for="male">男性 </label>
         <input
