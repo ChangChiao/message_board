@@ -1,7 +1,7 @@
 import axios from 'axios';
-
+import { useToast } from 'vue-toastification';
+const toast = useToast();
 const service = axios.create({});
-
 service.interceptors.request.use(
   (config) => {
     console.log('config', config);
@@ -28,6 +28,8 @@ service.interceptors.response.use(
     // const { status } = error.response;
     // console.log(`error--${status}`, 'error');
     // eslint-disable-next-line prefer-promise-reject-errors
+    const errorMsg = error.response?.data.message?.message;
+    toast.error(errorMsg);
     return Promise.reject(error);
   }
 );
