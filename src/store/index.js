@@ -1,3 +1,4 @@
 import useValidateStore from './validate';
 import useUserStore from './user';
-export { useValidateStore, useUserStore };
+import useRoomStore from './room';
+export { useValidateStore, useUserStore, useRoomStore };

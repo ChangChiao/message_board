@@ -5,13 +5,18 @@ import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
 import Back from '../icons/Back.vue';
 import eventBus from '../utils/eventBus';
+import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { io } from 'socket.io-client';
+import { useRoomStore } from '@/store';
+const roomStore = useRoomStore();
+const { room } = storeToRefs(roomStore);
 const router = useRouter();
 const messageContainer = ref(null);
 const messageList = reactive([]);
 // socket初始化
 const socket = io('http://localhost:3008/chat');
+const roomInfo = reactive({});
 // const socket = io('http://localhost:3008' + '/socket.io/');
 // 建立連線
 socket.on('connect', () => {
@@ -21,16 +26,6 @@ socket.on('connect', () => {
 
 socket.on('receiveMsg', (msg) => {
   console.log('接收到別人傳的訊息', msg);
-  //   const obj = {
-  //     _id: 1,
-  //     user: {
-  //       userName: 'Dora',
-  //       _id: '2266'
-  //     },
-  //     userName: 'Dora',
-  //     content: msg,
-  //     createdAt: Date.now()
-  //   };
   messageList.push(msg);
   console.log(scrollBottom);
   //   scrollBottom();
@@ -38,11 +33,11 @@ socket.on('receiveMsg', (msg) => {
 
 const sendMessage = (msg) => {
   const sendMsg = {
-    roomId: '6280c6aee4518b0ee2e82f68',
+    roomId: room.value.roomId,
     message: msg,
-    sender: '627f21437c384160be65d10d'
+    sender: room.value.receiver
   };
-  socket.emit('sendMsg', sendMsg || {});
+  socket.emit('sendMsg', sendMsg);
   //   scrollBottom();
 };
 
@@ -53,172 +48,6 @@ const scrollBottom = async () => {
   messageContainer.value.scrollTop = messageContainer.value.scrollHeight;
 };
 
-// const messageList = reactive([
-//   {
-//     _id: 1,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     userName: 'Dora',
-//     content: '結果你的晚餐還在被延',
-//     createdAt: '2022-05-05T12:28:19.793Z'
-//   },
-//   {
-//     _id: 2,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '原來新北市跟台北市一樣',
-//     createdAt: '2022-05-05T12:28:19.813Z'
-//   },
-//   {
-//     _id: 3,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '等到我花都謝了',
-//     createdAt: '2022-05-05T12:28:19.999Z'
-//   },
-//   {
-//     _id: 4,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '點外送練習修身養性',
-//     createdAt: '2022-05-05T12:29:19.793Z'
-//   },
-//   {
-//     _id: 5,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '我在晚餐開店的第一分鐘就點餐了',
-//     createdAt: '2022-05-05T12:30:19.793Z'
-//   },
-//   {
-//     _id: 6,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '雨越大等越久',
-//     createdAt: '2022-05-05T12:30:19.899Z'
-//   },
-//   {
-//     _id: 7,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '你的晚餐竟然被四延了',
-//     createdAt: '2022-05-05T12:32:19.793Z'
-//   },
-//   {
-//     _id: 8,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '傻眼',
-//     createdAt: '2022-05-05T12:33:19.793Z'
-//   },
-//   {
-//     _id: 9,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '等待時間直接變成一個半小時',
-//     createdAt: '2022-05-05T12:33:19.793Z'
-//   },
-//   {
-//     _id: 1,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     userName: 'Dora',
-//     content: '結果你的晚餐還在被延',
-//     createdAt: '2022-05-05T12:28:19.793Z'
-//   },
-//   {
-//     _id: 2,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '原來新北市跟台北市一樣',
-//     createdAt: '2022-05-05T12:28:19.813Z'
-//   },
-//   {
-//     _id: 3,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '等到我花都謝了',
-//     createdAt: '2022-05-05T12:28:19.999Z'
-//   },
-//   {
-//     _id: 4,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '點外送練習修身養性',
-//     createdAt: '2022-05-05T12:29:19.793Z'
-//   },
-//   {
-//     _id: 5,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '我在晚餐開店的第一分鐘就點餐了',
-//     createdAt: '2022-05-05T12:30:19.793Z'
-//   },
-//   {
-//     _id: 6,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '雨越大等越久',
-//     createdAt: '2022-05-05T12:30:19.899Z'
-//   },
-//   {
-//     _id: 7,
-//     user: {
-//       userName: 'Dora',
-//       _id: '2266'
-//     },
-//     content: '你的晚餐竟然被四延了',
-//     createdAt: '2022-05-05T12:32:19.793Z'
-//   },
-//   {
-//     _id: 8,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '傻眼',
-//     createdAt: '2022-05-05T12:33:19.793Z'
-//   },
-//   {
-//     _id: 9,
-//     user: {
-//       userName: 'joe',
-//       _id: '5566'
-//     },
-//     content: '等待時間直接變成一個半小時',
-//     createdAt: '2022-05-05T12:33:19.793Z'
-//   }
-// ]);
 const closeRoom = () => {
   eventBus.emit('handleRoom', false);
 };
@@ -238,6 +67,9 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.body.style = '';
+  const { roomId, avatar, userName, receiver } = localStorage.getItem('room');
+  Object.assign(roomInfo, { roomId, avatar, userName, receiver });
+  console.log('roomInfo', roomInfo);
 });
 </script>
 
@@ -250,12 +82,8 @@ onBeforeUnmount(() => {
     >
       <div class="flex items-center">
         <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
-        <img
-          class="avatar w-10 h-10"
-          src="https://i.pravatar.cc/150?img=19"
-          alt=""
-        />
-        <span class="pl-4 font-bold">Dora</span>
+        <img class="avatar w-10 h-10" :src="room.avatar" alt="" />
+        <span class="pl-4 font-bold">{{ room.userName }}</span>
       </div>
       <span @click="closeRoom" class="text-xs text-gray"
         >對方正在輸入中...</span

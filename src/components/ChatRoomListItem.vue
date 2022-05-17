@@ -3,6 +3,8 @@ import { defineProps, toRefs } from 'vue';
 import dayjs from 'dayjs';
 import eventBus from '../utils/eventBus';
 import { useRouter } from 'vue-router';
+import { useRoomStore } from '@/store';
+const roomStore = useRoomStore();
 const router = useRouter();
 const props = defineProps({
   room: {
@@ -11,7 +13,7 @@ const props = defineProps({
     default: () => {}
   }
 });
-const { userName, message: msg, avatar, roomId } = toRefs(props.room);
+const { userName, message: msg, avatar, roomId, _id } = toRefs(props.room);
 const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD ');
 };
@@ -20,6 +22,7 @@ const isMobile = () => {
 };
 const goChatRoom = () => {
   console.log('channelId', roomId.value);
+  roomStore.updateRoom({ roomId, userName, avatar, receiver: _id });
   if (isMobile()) {
     router.push('/chatroom');
     return;
@@ -44,6 +47,8 @@ const goChatRoom = () => {
         </p>
       </div>
     </div>
-    <span class="text-gray text-xs">{{ formateTime(msg?.[0]?.createdAt) }}</span>
+    <span class="text-gray text-xs">{{
+      formateTime(msg?.[0]?.createdAt)
+    }}</span>
   </li>
 </template>

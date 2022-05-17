@@ -2,18 +2,19 @@
 // import UserCard from '../components/UserCard.vue';
 import { postAPIData } from '@/utils/api/ajax';
 import eventBus from '../utils/eventBus';
-
+import { useRoomStore } from '@/store';
+const roomStore = useRoomStore();
 const sendMessage = async () => {
   const sendData = {
-    receiver: '627f20ae7c384160be65d107'
+    receiver: '62833a81d3692f15d21af56d'
   };
   try {
     const res = await postAPIData('/chat/room-info', sendData);
-    const { status, roomId } = res;
+    const { status, roomId, userName, avatar, _id } = res;
     if (status === 'success') {
       console.log('res', res);
-      localStorage.setItem('roomId', roomId);
-      false && eventBus.emit('handleRoom', true);
+      roomStore.updateRoom({ roomId, userName, avatar, receiver: _id });
+      eventBus.emit('handleRoom', true);
     }
   } catch (error) {
     console.log('error', error);
@@ -33,13 +34,12 @@ const sendMessage = async () => {
       <p>阿阿</p>
       <p>8777人追蹤</p>
     </div>
-    <button @click="sendMessage" class="button text-black bg-[#EFECE7] w-32 h-9 mr-2">
+    <button
+      @click="sendMessage"
+      class="button text-black bg-[#EFECE7] w-32 h-9 mr-2"
+    >
       發送訊息
     </button>
-    <button
-      class="button text-black bg-[#EFECE7] w-32 h-9"
-    >
-      取消追蹤
-    </button>
+    <button class="button text-black bg-[#EFECE7] w-32 h-9">取消追蹤</button>
   </div>
 </template>
