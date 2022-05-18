@@ -5,18 +5,20 @@ import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
 import Back from '../icons/Back.vue';
 import eventBus from '../utils/eventBus';
+import { throttle } from '../utils/common';
 import { storeToRefs } from 'pinia';
+import { useRoomStore, useUserStore } from '@/store';
 import { useRouter } from 'vue-router';
 import { io } from 'socket.io-client';
-import { useRoomStore } from '@/store';
+const useStore = useUserStore();
 const roomStore = useRoomStore();
 const { room } = storeToRefs(roomStore);
+const { user } = storeToRefs(useStore);
 const router = useRouter();
 const messageContainer = ref(null);
 const messageList = reactive([]);
 // socket初始化
 const socket = io('http://localhost:3008/chat');
-const roomInfo = reactive({});
 // const socket = io('http://localhost:3008' + '/socket.io/');
 // 建立連線
 socket.on('connect', () => {
@@ -24,20 +26,37 @@ socket.on('connect', () => {
   console.log('connect'); // true
 });
 
-socket.on('receiveMsg', (msg) => {
+// 接收到別人傳的訊息
+socket.on('chatMessage', (msg) => {
   console.log('接收到別人傳的訊息', msg);
   messageList.push(msg);
   console.log(scrollBottom);
   //   scrollBottom();
 });
 
+// 接收歷史訊息
+socket.on('history', (msgList) => {
+  console.log('接收到別人傳的訊息', msgList);
+  Object.assign([msgList, ...messageList]);
+  console.log(scrollBottom);
+  // 滾輪調整
+});
+
+const getHistory = () => {
+  const info = {
+    roomId: room.value.roomId,
+    lastTime: messageList[0]?.createdAt
+  };
+  socket.emit('chatMessage', info);
+};
+
 const sendMessage = (msg) => {
   const sendMsg = {
     roomId: room.value.roomId,
     message: msg,
-    sender: room.value.receiver
+    sender: user.value._id
   };
-  socket.emit('sendMsg', sendMsg);
+  socket.emit('chatMessage', sendMsg);
   //   scrollBottom();
 };
 
@@ -52,6 +71,13 @@ const closeRoom = () => {
   eventBus.emit('handleRoom', false);
 };
 
+const detectTop = () => {
+  messageContainer.value.addEventListener('scroll', () => {});
+  if (messageContainer.value.scrollTop === 0) {
+    throttle(getHistory, 1000);
+  }
+};
+
 const toPrevPage = () => {
   router.go(-1);
 };
@@ -63,13 +89,12 @@ const isMobile = () => {
 onMounted(() => {
   // 鎖ios橡皮筋效果
   isMobile() && (document.body.style = 'overflow: hidden;position:fixed');
+  detectTop();
 });
 
 onBeforeUnmount(() => {
   document.body.style = '';
-  const { roomId, avatar, userName, receiver } = localStorage.getItem('room');
-  Object.assign(roomInfo, { roomId, avatar, userName, receiver });
-  console.log('roomInfo', roomInfo);
+  socket.leave(room.value.roomId);
 });
 </script>
 
