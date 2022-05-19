@@ -27,15 +27,18 @@ if (!token) {
 // socket初始化
 const socket = io('http://localhost:3008/chat', {
   query: {
-    token: localStorage.getItem('token')
+    token: localStorage.getItem('token'),
+    room: room.value.roomId
   }
 });
 // const socket = io('http://localhost:3008' + '/socket.io/');
 // 建立連線
 socket.on('connect', () => {
-  console.log('connect');
+  console.log('connect----');
 });
 
+socket.emit('joinRoom', room.value.roomId);
+// socket.emit('super', room.value.roomId);
 // 接收到別人傳的訊息
 socket.on('chatMessage', (msg) => {
   console.log('接收到別人傳的訊息', msg);
@@ -109,8 +112,8 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  socket.emit('leaveRoom', room.value.roomId);
   document.body.style = '';
-  socket.leave(room.value.roomId);
 });
 </script>
 
