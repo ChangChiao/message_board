@@ -1,4 +1,5 @@
 <script setup>
+import { useToast } from 'vue-toastification';
 import { nextTick, reactive, onMounted, onBeforeUnmount, ref } from 'vue';
 import ChatRoomMessage from './ChatRoomMessage.vue';
 import ChatRoomInputBox from './ChatRoomInputBox.vue';
@@ -10,6 +11,7 @@ import { storeToRefs } from 'pinia';
 import { useRoomStore, useUserStore } from '@/store';
 import { useRouter } from 'vue-router';
 import { io } from 'socket.io-client';
+const toast = useToast();
 const useStore = useUserStore();
 const roomStore = useRoomStore();
 const { room } = storeToRefs(roomStore);
@@ -17,13 +19,21 @@ const { user } = storeToRefs(useStore);
 const router = useRouter();
 const messageContainer = ref(null);
 const messageList = reactive([]);
+
+const token = localStorage.getItem('token');
+if (!token) {
+  router.push('/');
+}
 // socket初始化
-const socket = io('http://localhost:3008/chat');
+const socket = io('http://localhost:3008/chat', {
+  query: {
+    token: localStorage.getItem('token')
+  }
+});
 // const socket = io('http://localhost:3008' + '/socket.io/');
 // 建立連線
 socket.on('connect', () => {
-  socket.emit('no no no', 1122);
-  console.log('connect'); // true
+  console.log('connect');
 });
 
 // 接收到別人傳的訊息
@@ -40,6 +50,12 @@ socket.on('history', (msgList) => {
   Object.assign([msgList, ...messageList]);
   console.log(scrollBottom);
   // 滾輪調整
+});
+
+// 接收錯誤
+socket.on('error', (error) => {
+  toast.error(error);
+  router.go('/');
 });
 
 const getHistory = () => {
