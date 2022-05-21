@@ -18,12 +18,16 @@ const { room } = storeToRefs(roomStore);
 const { user } = storeToRefs(useStore);
 const router = useRouter();
 const messageContainer = ref(null);
+const fetchAllFlag = ref(false);
+const newMsgFlag = ref(false);
 const messageList = reactive([]);
-
+let flagHistory = false;
+let scrollRecord = 0;
 const token = localStorage.getItem('token');
 if (!token) {
   router.push('/');
 }
+
 // socket初始化
 const socket = io('http://localhost:3008/chat', {
   query: {
@@ -43,18 +47,37 @@ socket.emit('joinRoom', room.value.roomId);
 socket.on('chatMessage', (msg) => {
   console.log('接收到別人傳的訊息', msg);
   messageList.push(msg);
-  console.log(scrollBottom);
-  //   scrollBottom();
+  if (
+    messageContainer.value.scrollHeight - messageContainer.value.scrollTop >
+    messageContainer.value.clientHeight
+  ) {
+    user.value._id !== msg.sender && (newMsgFlag.value = true);
+  } else {
+    scrollBottom();
+  }
 });
 
 // 接收歷史訊息
 socket.on('history', (msgList) => {
-  console.log('接收到別人傳的訊息', msgList);
-  Object.assign([msgList, ...messageList]);
-  console.log(scrollBottom);
+  console.log('接收到歷史訊息', msgList);
+  const newArray = [...msgList, ...messageList];
+  Object.assign(messageList, newArray);
+  console.log('messageList', messageList);
+  msgList.length < 30 && (fetchAllFlag.value = true);
+  if (!flagHistory) {
+    scrollBottom();
+    flagHistory = true;
+  } else {
+    scrollToCorrect();
+  }
   // 滾輪調整
 });
 
+const scrollToCorrect = async () => {
+  await nextTick();
+  messageContainer.value.scrollTop =
+    messageContainer.value.scrollHeight - scrollRecord;
+};
 // 接收錯誤
 socket.on('error', (error) => {
   toast.error(error);
@@ -62,16 +85,16 @@ socket.on('error', (error) => {
 });
 
 const getHistory = () => {
+  console.log('getHistory');
+  if (fetchAllFlag.value) return;
   const info = {
-    roomId: room.value.roomId,
     lastTime: messageList[0]?.createdAt
   };
-  socket.emit('chatMessage', info);
+  socket.emit('history', info);
 };
 
 const sendMessage = (msg) => {
   const sendMsg = {
-    roomId: room.value.roomId,
     message: msg,
     sender: user.value._id
   };
@@ -81,9 +104,10 @@ const sendMessage = (msg) => {
 
 const scrollBottom = async () => {
   console.log(nextTick);
-  //   await nextTick();
+  await nextTick();
   //   console.log('messageContainer', messageContainer);
-  messageContainer.value.scrollTop = messageContainer.value.scrollHeight;
+  newMsgFlag.value = false;
+  messageContainer.value.scrollTop = messageContainer.value?.scrollHeight;
 };
 
 const closeRoom = () => {
@@ -91,10 +115,16 @@ const closeRoom = () => {
 };
 
 const detectTop = () => {
-  messageContainer.value.addEventListener('scroll', () => {});
-  if (messageContainer.value.scrollTop === 0) {
-    throttle(getHistory, 1000);
-  }
+  messageContainer.value.addEventListener(
+    'scroll',
+    () => {
+      if (messageContainer.value.scrollTop === 0) {
+        scrollRecord = messageContainer.value.scrollHeight;
+        throttle(getHistory, 1000)();
+      }
+    },
+    false
+  );
 };
 
 const toPrevPage = () => {
@@ -108,6 +138,7 @@ const isMobile = () => {
 onMounted(() => {
   // 鎖ios橡皮筋效果
   isMobile() && (document.body.style = 'overflow: hidden;position:fixed');
+  getHistory();
   detectTop();
 });
 
@@ -137,10 +168,27 @@ onBeforeUnmount(() => {
         @click="closeRoom"
       />
     </div>
-    <div ref="messageContainer" class="inner bg-slate-100 overflow-y-auto">
+    <div
+      id="messageContainer"
+      ref="messageContainer"
+      class="inner relative bg-slate-100 overflow-y-auto"
+    >
+      <div v-if="fetchAllFlag" class="text-center py-2 text-sm">
+        已無聊天訊息
+      </div>
+      <div class="text-center" v-if="messageList.length === 0">
+        開始聊天吧！
+      </div>
       <template v-for="message in messageList" :key="message._id">
         <chat-room-message :message="message" />
       </template>
+    </div>
+    <div
+      v-if="newMsgFlag"
+      @click="scrollBottom"
+      class="w-full h-12 absolute bottom-10 left-0 p-2 bg-black bg-opacity-40 text-white"
+    >
+      您有新訊息
     </div>
     <chat-room-input-box @sendMessage="sendMessage" />
   </div>

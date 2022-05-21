@@ -6,7 +6,7 @@ import { useRoomStore } from '@/store';
 const roomStore = useRoomStore();
 const sendMessage = async () => {
   const sendData = {
-    receiver: '62833a81d3692f15d21af56d'
+    receiver: '62834466572c43bf1eb3058b'
   };
   try {
     const res = await postAPIData('/chat/room-info', sendData);

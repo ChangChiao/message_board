@@ -14,8 +14,9 @@ const props = defineProps({
 });
 const { message: content, sender, createdAt } = toRefs(props.message);
 const isSelf = computed(() => {
-  return userInfo.value._id === sender.value._id;
+  return userInfo?.value._id === sender.value;
 });
+// console.log('isSelf', isSelf.value, userInfo.value._id, sender.value._id);
 
 const formateTime = (time) => {
   return dayjs(time).format('HH:mm');
