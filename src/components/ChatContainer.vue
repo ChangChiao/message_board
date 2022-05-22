@@ -10,14 +10,13 @@ const showRoom = ref(false);
 eventBus.on('handleRoom', ({ isOpen, roomId }) => {
   showRoom.value = isOpen;
   console.log('roomId', roomId, room.value.roomId);
-  if (isOpen && roomId === room.value.roomId) return;
-  if (roomId !== room.value.roomId) {
+  if (isOpen) {
+    if (roomId === room.value.roomId) return;
     showRoom.value = false;
     setTimeout(() => {
       showRoom.value = true;
     }, 300);
   }
-  console.warn('roomId', roomId.value);
 });
 
 onBeforeUnmount(() => {

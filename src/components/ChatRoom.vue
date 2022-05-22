@@ -7,6 +7,7 @@ import Close from '../icons/Close.vue';
 import Back from '../icons/Back.vue';
 import eventBus from '../utils/eventBus';
 import { throttle } from '../utils/common';
+import { API_URL } from '../global/constant';
 import { storeToRefs } from 'pinia';
 import { useRoomStore, useUserStore } from '@/store';
 import { useRouter } from 'vue-router';
@@ -30,7 +31,7 @@ if (!token) {
 }
 
 // socket初始化
-const socket = io('http://localhost:3008/chat', {
+const socket = io(`${API_URL}/chat`, {
   query: {
     token: localStorage.getItem('token'),
     room: room.value.roomId
