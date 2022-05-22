@@ -27,7 +27,7 @@ const goChatRoom = () => {
     router.push('/chatroom');
     return;
   }
-  eventBus.emit('handleRoom', true);
+  eventBus.emit('handleRoom', { isOpen: true, roomId: roomId.value });
 };
 </script>
 

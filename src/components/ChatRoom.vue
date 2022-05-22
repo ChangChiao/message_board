@@ -20,9 +20,10 @@ const router = useRouter();
 const messageContainer = ref(null);
 const fetchAllFlag = ref(false);
 const newMsgFlag = ref(false);
+const flagHistory = ref(false);
+const scrollRecord = ref(0);
 const messageList = reactive([]);
-let flagHistory = false;
-let scrollRecord = 0;
+
 const token = localStorage.getItem('token');
 if (!token) {
   router.push('/');
@@ -33,16 +34,17 @@ const socket = io('http://localhost:3008/chat', {
   query: {
     token: localStorage.getItem('token'),
     room: room.value.roomId
-  }
+  },
+  // autoConnect: false,
+  forceNew: true
 });
-// const socket = io('http://localhost:3008' + '/socket.io/');
 // 建立連線
 socket.on('connect', () => {
   console.log('connect----');
+  getHistory();
 });
 
 socket.emit('joinRoom', room.value.roomId);
-// socket.emit('super', room.value.roomId);
 // 接收到別人傳的訊息
 socket.on('chatMessage', (msg) => {
   console.log('接收到別人傳的訊息', msg);
@@ -64,9 +66,9 @@ socket.on('history', (msgList) => {
   Object.assign(messageList, newArray);
   console.log('messageList', messageList);
   msgList.length < 30 && (fetchAllFlag.value = true);
-  if (!flagHistory) {
+  if (!flagHistory.value) {
     scrollBottom();
-    flagHistory = true;
+    flagHistory.value = true;
   } else {
     scrollToCorrect();
   }
@@ -76,7 +78,7 @@ socket.on('history', (msgList) => {
 const scrollToCorrect = async () => {
   await nextTick();
   messageContainer.value.scrollTop =
-    messageContainer.value.scrollHeight - scrollRecord;
+    messageContainer.value.scrollHeight - scrollRecord.value;
 };
 // 接收錯誤
 socket.on('error', (error) => {
@@ -85,11 +87,12 @@ socket.on('error', (error) => {
 });
 
 const getHistory = () => {
-  console.log('getHistory');
+  console.log('getHistory', fetchAllFlag.value);
   if (fetchAllFlag.value) return;
   const info = {
     lastTime: messageList[0]?.createdAt
   };
+  console.warn('emit!!!!!!!!!!!!!!', socket.emit);
   socket.emit('history', info);
 };
 
@@ -119,7 +122,7 @@ const detectTop = () => {
     'scroll',
     () => {
       if (messageContainer.value.scrollTop === 0) {
-        scrollRecord = messageContainer.value.scrollHeight;
+        scrollRecord.value = messageContainer.value.scrollHeight;
         throttle(getHistory, 1000)();
       }
     },
@@ -136,14 +139,17 @@ const isMobile = () => {
 };
 
 onMounted(() => {
+  console.warn('mounted');
   // 鎖ios橡皮筋效果
   isMobile() && (document.body.style = 'overflow: hidden;position:fixed');
-  getHistory();
   detectTop();
 });
 
 onBeforeUnmount(() => {
+  console.warn('onBeforeUnmount');
   socket.emit('leaveRoom', room.value.roomId);
+  socket.off();
+  socket.disconnect();
   document.body.style = '';
 });
 </script>
