@@ -1,10 +1,14 @@
 <script setup>
 import { defineProps, toRefs } from 'vue';
+import { useToast } from 'vue-toastification';
 import dayjs from 'dayjs';
 import eventBus from '../utils/eventBus';
 import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import { useRoomStore } from '@/store';
 const roomStore = useRoomStore();
+const toast = useToast();
+const { room } = storeToRefs(roomStore);
 const router = useRouter();
 const props = defineProps({
   room: {
@@ -22,12 +26,16 @@ const isMobile = () => {
 };
 const goChatRoom = () => {
   console.log('channelId', roomId.value);
+  if (room.value.roomId && room.value.roomId !== roomId.value) {
+    toast.error('您一次只能跟一個人聊天');
+    return;
+  }
   roomStore.updateRoom({ roomId, userName, avatar, receiver: _id });
   if (isMobile()) {
     router.push('/chatroom');
     return;
   }
-  eventBus.emit('handleRoom', { isOpen: true, roomId: roomId.value });
+  eventBus.emit('handleRoom', true);
 };
 </script>
 

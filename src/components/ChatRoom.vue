@@ -42,7 +42,10 @@ const socket = io(`${API_URL}/chat`, {
 // 建立連線
 socket.on('connect', () => {
   console.log('connect----');
-  getHistory();
+  // TODO 不用setTimeout getHistory會偶發性失效
+  setTimeout(() => {
+    getHistory();
+  }, 200);
 });
 
 socket.emit('joinRoom', room.value.roomId);
@@ -93,7 +96,8 @@ const getHistory = () => {
   const info = {
     lastTime: messageList[0]?.createdAt
   };
-  console.warn('emit!!!!!!!!!!!!!!', socket.emit);
+  console.warn('emit!!!!!!!!!!!!!!');
+  console.warn('---', socket.connected);
   socket.emit('history', info);
 };
 
@@ -148,6 +152,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   console.warn('onBeforeUnmount');
+  roomStore.updateRoom({});
   socket.emit('leaveRoom', room.value.roomId);
   socket.off();
   socket.disconnect();
