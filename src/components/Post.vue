@@ -22,7 +22,7 @@ const formateTime = (time) => {
         alt=""
       />
       <div class="pl-3">
-        <p class="text-base text-bold">{{ postData.user?.userName }}</p>
+        <p class="text-base text-bold">{{ postData.user?.name }}</p>
         <p class="text-gray text-xs">{{ formateTime(postData.createdAt) }}</p>
       </div>
     </div>

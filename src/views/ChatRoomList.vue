@@ -27,7 +27,7 @@ onMounted(() => {
 //     roomId: 124234234,
 //     receiver: {
 //       _id: '2266',
-//       userName: 'Dora',
+//       name: 'Dora',
 //       avatar: 'https://i.pravatar.cc/150?img=19'
 //     },
 //     // 以下使用關聯
@@ -35,7 +35,7 @@ onMounted(() => {
 //     message: {
 //       _id: 9,
 //       user: {
-//         userName: 'joe',
+//         name: 'joe',
 //         _id: '5566'
 //       },
 //       content: '等待時間直接變成一個半小時',
@@ -46,7 +46,7 @@ onMounted(() => {
 //     roomId: 124234238,
 //     receiver: {
 //       _id: '8866',
-//       userName: 'May',
+//       name: 'May',
 //       avatar: 'https://i.pravatar.cc/150?img=27'
 //     },
 //     // 以下使用關聯
@@ -54,7 +54,7 @@ onMounted(() => {
 //     message: {
 //       _id: 10,
 //       user: {
-//         userName: 'joe',
+//         name: 'joe',
 //         _id: '5566'
 //       },
 //       content:

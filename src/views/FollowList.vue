@@ -2,8 +2,8 @@
 import FollowListItem from '../components/FollowListItem.vue';
 import { reactive } from 'vue';
 const list = reactive([
-  { id: 1, userName: 'amy', time: '2022/1/10 12:00', days: 20 },
-  { id: 2, userName: 'mike', time: '2022/1/10 12:00', days: 20 }
+  { id: 1, name: 'amy', time: '2022/1/10 12:00', days: 20 },
+  { id: 2, name: 'mike', time: '2022/1/10 12:00', days: 20 }
 ]);
 </script>
 

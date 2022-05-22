@@ -26,7 +26,7 @@ const { user } = storeToRefs(useStore);
             :src="user.avatar"
             alt=""
           />
-          <span class="pl-4 text-bold">{{ user.userName }}</span>
+          <span class="pl-4 text-bold">{{ user.name }}</span>
         </router-link>
       </li>
       <li class="pb-4">

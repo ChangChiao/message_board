@@ -10,10 +10,10 @@ const sendMessage = async () => {
   };
   try {
     const res = await postAPIData('/chat/room-info', sendData);
-    const { status, roomId, userName, avatar, _id } = res;
+    const { status, roomId, name, avatar, _id } = res;
     if (status === 'success') {
       console.log('res', res);
-      roomStore.updateRoom({ roomId, userName, avatar, receiver: _id });
+      roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
       eventBus.emit('handleRoom', true);
     }
   } catch (error) {

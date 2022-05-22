@@ -170,7 +170,7 @@ onBeforeUnmount(() => {
       <div class="flex items-center">
         <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
         <img class="avatar w-10 h-10" :src="room.avatar" alt="" />
-        <span class="pl-4 font-bold">{{ room.userName }}</span>
+        <span class="pl-4 font-bold">{{ room.name }}</span>
       </div>
       <span @click="closeRoom" class="text-xs text-gray"
         >對方正在輸入中...</span

@@ -17,7 +17,7 @@ const props = defineProps({
     default: () => {}
   }
 });
-const { userName, message: msg, avatar, roomId, _id } = toRefs(props.room);
+const { name, message: msg, avatar, roomId, _id } = toRefs(props.room);
 const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD ');
 };
@@ -30,7 +30,7 @@ const goChatRoom = () => {
     toast.error('您一次只能跟一個人聊天');
     return;
   }
-  roomStore.updateRoom({ roomId, userName, avatar, receiver: _id });
+  roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
   if (isMobile()) {
     router.push('/chatroom');
     return;
@@ -47,7 +47,7 @@ const goChatRoom = () => {
     <div class="flex">
       <img class="w-10 h-10 avatar" :src="avatar" alt="avatar" />
       <div class="flex-1 pl-2">
-        <p class="font-bold">{{ userName }}</p>
+        <p class="font-bold">{{ name }}</p>
         <p
           class="w-[200px] md:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
         >

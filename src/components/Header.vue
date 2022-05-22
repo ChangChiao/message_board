@@ -5,7 +5,7 @@ const useStore = useUserStore();
 const {
   user
 } = storeToRefs(useStore);
-console.log('userName', user.value.userName);
+console.log('name', user.value.name);
 </script>
 <template>
   <header class="bg-white border-b-2 p-4">
@@ -17,7 +17,7 @@ console.log('userName', user.value.userName);
           :src="user.avatar"
           alt=""
         />
-        <span class="text-bold font-logo pl-2">{{ user.userName }}</span>
+        <span class="text-bold font-logo pl-2">{{ user.name }}</span>
       </div>
     </div>
   </header>
