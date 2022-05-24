@@ -2,7 +2,7 @@ export default {
   required (value) {
     return value !== '' && value !== undefined && value !== null;
   },
-  userName (value) {
+  name (value) {
     return /[a-zA-Z0-9]{1,12}$/.test(value);
   },
   password (value) {

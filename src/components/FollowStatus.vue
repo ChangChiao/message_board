@@ -1,23 +1,29 @@
 <script setup>
 // import UserCard from '../components/UserCard.vue';
+import { ref } from 'vue';
 import { postAPIData } from '@/utils/api/ajax';
 import eventBus from '../utils/eventBus';
 import { useRoomStore } from '@/store';
 const roomStore = useRoomStore();
+const pending = ref(false);
 const sendMessage = async () => {
+  if (pending.value) return;
   const sendData = {
-    receiver: '62833a81d3692f15d21af56d'
+    receiver: '628c3a476e56188da0aec6c7'
   };
   try {
+    pending.value = true;
     const res = await postAPIData('/chat/room-info', sendData);
-    const { status, roomId, userName, avatar, _id } = res;
+    const { status, roomId, name, avatar, _id } = res;
     if (status === 'success') {
       console.log('res', res);
-      roomStore.updateRoom({ roomId, userName, avatar, receiver: _id });
+      roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
       eventBus.emit('handleRoom', true);
     }
   } catch (error) {
     console.log('error', error);
+  } finally {
+    pending.value = false;
   }
 };
 </script>

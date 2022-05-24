@@ -17,7 +17,7 @@ const setComp = () => {
 };
 // eslint-disable-next-line no-unused-vars
 const loginData = reactive({
-  userName: '',
+  name: '',
   email: '',
   password: ''
 });
@@ -28,14 +28,14 @@ const handleSubmit = async () => {
     return;
   }
   try {
-    const res = await postAPIData('/users/sign_up', loginData);
+    const res = await postAPIData('/users/sign-up', loginData);
     const {
       status,
-      user: { token, userName }
+      user: { token, name }
     } = res;
     if (status === 'success') {
       localStorage.setItem('token', token);
-      useStore.updateUser({ userName });
+      useStore.updateUser({ name });
     }
     router.push('/');
   } catch (error) {
@@ -50,9 +50,9 @@ onBeforeUnmount(() => {
 <template>
   <div class="text-center">
     <Input
-      v-model.trim="loginData.userName"
-      :vaildField="['required', 'userName']"
-      validId="userName"
+      v-model.trim="loginData.name"
+      :vaildField="['required', 'name']"
+      validId="name"
       placeholder="暱稱"
     />
     <Input

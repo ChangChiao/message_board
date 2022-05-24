@@ -1,9 +1,15 @@
 <script setup>
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import { postAPIData } from '@/utils/api/ajax';
 import ChatRoomListItem from '@/components/ChatRoomListItem.vue';
-// import eventBus from '../utils/eventBus';
+import eventBus from '../utils/eventBus';
 const chatList = reactive([]);
+
+eventBus.on('updateChatRecord', ({ roomId, msg }) => {
+  const targetIndex = chatList.findIndex((item) => item.roomId === roomId);
+  targetIndex > -1 && (chatList[targetIndex].message = [msg]);
+});
+
 const queryRoomList = async () => {
   try {
     const res = await postAPIData('/chat/chat-record');
@@ -22,12 +28,15 @@ onMounted(() => {
   queryRoomList();
 });
 
+onBeforeUnmount(() => {
+  eventBus.all.clear();
+});
 // const chatList = reactive([
 //   {
 //     roomId: 124234234,
 //     receiver: {
 //       _id: '2266',
-//       userName: 'Dora',
+//       name: 'Dora',
 //       avatar: 'https://i.pravatar.cc/150?img=19'
 //     },
 //     // 以下使用關聯
@@ -35,7 +44,7 @@ onMounted(() => {
 //     message: {
 //       _id: 9,
 //       user: {
-//         userName: 'joe',
+//         name: 'joe',
 //         _id: '5566'
 //       },
 //       content: '等待時間直接變成一個半小時',
@@ -46,7 +55,7 @@ onMounted(() => {
 //     roomId: 124234238,
 //     receiver: {
 //       _id: '8866',
-//       userName: 'May',
+//       name: 'May',
 //       avatar: 'https://i.pravatar.cc/150?img=27'
 //     },
 //     // 以下使用關聯
@@ -54,7 +63,7 @@ onMounted(() => {
 //     message: {
 //       _id: 10,
 //       user: {
-//         userName: 'joe',
+//         name: 'joe',
 //         _id: '5566'
 //       },
 //       content:

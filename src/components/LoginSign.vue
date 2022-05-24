@@ -30,14 +30,14 @@ const handleSubmit = async () => {
     return;
   }
   try {
-    const res = await postAPIData('/users/sign_in', loginData);
+    const res = await postAPIData('/users/sign-in', loginData);
     const {
       status,
-      user: { token, userName }
+      user: { token, name }
     } = res;
     if (status === 'success') {
       localStorage.setItem('token', token);
-      useStore.updateUser({ userName });
+      useStore.updateUser({ name });
     }
     router.push('/');
   } catch (error) {

@@ -14,11 +14,12 @@ export default defineStore('user', {
     async getUser () {
       try {
         const result = await getAPIData('/users/profile');
-        const { userName, avatar, gender } = result.user;
+        const { name, avatar, gender, _id } = result.user;
         console.log('user', result.user);
-        this.user.userName = userName;
+        this.user.name = name;
         this.user.avatar = avatar;
         this.user.gender = gender;
+        this.user._id = _id;
       } catch (error) {
         console.log('error', error);
       }

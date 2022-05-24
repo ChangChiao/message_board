@@ -12,7 +12,7 @@ const { validateList } = storeToRefs(validateStore);
 const { user } = storeToRefs(useStore);
 const toast = useToast();
 const initialState = {
-  userName: '',
+  name: '',
   gender: '',
   avatar: ''
 };
@@ -66,7 +66,7 @@ watch(
   user,
   () => {
     editContent.avatar = user?.value.avatar;
-    editContent.userName = user?.value.userName;
+    editContent.name = user?.value.name;
     editContent.gender = user?.value.gender;
     setTimeout(() => {
       console.log('editContent.gender', editContent.gender);
@@ -82,9 +82,9 @@ watch(
     <div class="pt-2">
       <h3 class="">暱稱</h3>
       <Input
-        v-model.trim="editContent.userName"
-        :vaildField="['required', 'userName']"
-        validId="userName"
+        v-model.trim="editContent.name"
+        :vaildField="['required', 'name']"
+        validId="name"
       />
     </div>
     <div class="w-full">
