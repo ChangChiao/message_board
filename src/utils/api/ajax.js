@@ -1,5 +1,5 @@
 import api from './http';
-import { API_URL, IMGUR_URL } from '../../global/constant';
+import { API_URL } from '../../global/constant';
 const getAuthorizationHeader = () => {
   const token = localStorage.getItem('token');
   return {
@@ -9,20 +9,16 @@ const getAuthorizationHeader = () => {
 
 const getAuthorizationImgHeader = () => {
   // eslint-disable-next-line camelcase
-  const access_token = localStorage.getItem('access_token');
   // const access_token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('token');
   return {
     'Content-Type': 'multipart/form-data',
     // eslint-disable-next-line camelcase
-    authorization: `Bearer ${access_token}`
+    authorization: `Bearer ${token}`
   };
 };
 
 export const getAPIData = (path) => {
-  // const config = {
-  //   headers: getAuthorizationHeader(),
-  //   params: sendData
-  // };
   const headers = getAuthorizationHeader();
   return api.get(API_URL + path, { headers });
 };
@@ -37,8 +33,8 @@ export const patchAPIData = (path, sendData = {}) => {
   return api.patch(API_URL + path, sendData, { headers });
 };
 
-export const postFormData = (sendData = {}) => {
+export const postFormData = (path, sendData = {}) => {
   const headers = getAuthorizationImgHeader();
-  console.log('#####IMGUR', sendData, headers);
-  return api.post(IMGUR_URL, sendData, { headers });
+  // console.log('#####IMGUR', sendData, headers);
+  return api.post(API_URL + path, sendData, { headers });
 };
