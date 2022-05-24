@@ -53,6 +53,7 @@ socket.emit('joinRoom', room.value.roomId);
 socket.on('chatMessage', (msg) => {
   console.log('接收到別人傳的訊息', msg);
   messageList.push(msg);
+  eventBus.emit('updateChatRecord', { roomId: room.value.roomId, msg });
   if (
     messageContainer.value.scrollHeight - messageContainer.value.scrollTop >
     messageContainer.value.clientHeight
@@ -185,10 +186,7 @@ onBeforeUnmount(() => {
       ref="messageContainer"
       class="inner relative bg-slate-100 overflow-y-auto"
     >
-      <div v-if="fetchAllFlag" class="text-center py-2 text-sm">
-        已無聊天訊息
-      </div>
-      <div class="text-center" v-if="messageList.length === 0">
+      <div class="text-center py-2 text-sm" v-if="messageList.length === 0">
         開始聊天吧！
       </div>
       <template v-for="message in messageList" :key="message._id">

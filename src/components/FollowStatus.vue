@@ -1,14 +1,18 @@
 <script setup>
 // import UserCard from '../components/UserCard.vue';
+import { ref } from 'vue';
 import { postAPIData } from '@/utils/api/ajax';
 import eventBus from '../utils/eventBus';
 import { useRoomStore } from '@/store';
 const roomStore = useRoomStore();
+const pending = ref(false);
 const sendMessage = async () => {
+  if (pending.value) return;
   const sendData = {
-    receiver: '62834466572c43bf1eb3058b'
+    receiver: '628c3a476e56188da0aec6c7'
   };
   try {
+    pending.value = true;
     const res = await postAPIData('/chat/room-info', sendData);
     const { status, roomId, name, avatar, _id } = res;
     if (status === 'success') {
@@ -18,6 +22,8 @@ const sendMessage = async () => {
     }
   } catch (error) {
     console.log('error', error);
+  } finally {
+    pending.value = false;
   }
 };
 </script>

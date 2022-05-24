@@ -1,9 +1,15 @@
 <script setup>
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, onBeforeUnmount } from 'vue';
 import { postAPIData } from '@/utils/api/ajax';
 import ChatRoomListItem from '@/components/ChatRoomListItem.vue';
-// import eventBus from '../utils/eventBus';
+import eventBus from '../utils/eventBus';
 const chatList = reactive([]);
+
+eventBus.on('updateChatRecord', ({ roomId, msg }) => {
+  const targetIndex = chatList.findIndex((item) => item.roomId === roomId);
+  targetIndex > -1 && (chatList[targetIndex].message = [msg]);
+});
+
 const queryRoomList = async () => {
   try {
     const res = await postAPIData('/chat/chat-record');
@@ -22,6 +28,9 @@ onMounted(() => {
   queryRoomList();
 });
 
+onBeforeUnmount(() => {
+  eventBus.all.clear();
+});
 // const chatList = reactive([
 //   {
 //     roomId: 124234234,
