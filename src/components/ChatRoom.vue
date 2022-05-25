@@ -6,7 +6,7 @@ import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
 import Back from '../icons/Back.vue';
 import eventBus from '../utils/eventBus';
-import { throttle } from '../utils/common';
+import { throttle, deviceType } from '../utils/common';
 import { API_URL } from '../global/constant';
 import { storeToRefs } from 'pinia';
 import { useRoomStore, useUserStore } from '@/store';
@@ -140,14 +140,11 @@ const toPrevPage = () => {
   router.go(-1);
 };
 
-const isMobile = () => {
-  return document.body.clientWidth < 768;
-};
-
 onMounted(() => {
-  console.warn('mounted');
+  console.warn('mounted', deviceType());
   // 鎖ios橡皮筋效果
-  isMobile() && (document.body.style = 'overflow: hidden;position:fixed');
+  deviceType() !== 'desktop' &&
+    (document.body.style = 'overflow: hidden;position:fixed');
   detectTop();
 });
 
@@ -163,10 +160,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="md:fixed md:border-2 bottom-0 right-10 w-screen md:w-[338px] h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg"
+    class="md:fixed md:border-2 bottom-0 right-10 w-screen md:w-[338px] overflow-hidden h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg"
   >
     <div
-      class="h-14 flex px-2 md:px-4 py-2 justify-between items-center border-b-2"
+      class="h-14 flex px-2 md:px-4 py-2 bg-white  justify-between items-center border-b-2"
     >
       <div class="flex items-center">
         <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
