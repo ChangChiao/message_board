@@ -7,10 +7,7 @@ const handleRoom = (isOpen) => {
   showRoom.value = isOpen;
   console.warn('handleRoom----', isOpen);
 };
-eventBus.on('handleRoom', (isOpen) => {
-  showRoom.value = isOpen;
-  console.warn('handleRoom----', isOpen);
-});
+eventBus.on('handleRoom', handleRoom);
 
 onBeforeUnmount(() => {
   console.log('onBeforeUnmount!!!');
