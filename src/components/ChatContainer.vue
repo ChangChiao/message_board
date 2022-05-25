@@ -3,12 +3,18 @@ import { onBeforeUnmount, ref } from 'vue';
 import ChatRoom from './ChatRoom.vue';
 import eventBus from '@/utils/eventBus';
 const showRoom = ref(false);
+const handleRoom = (isOpen) => {
+  showRoom.value = isOpen;
+  console.warn('handleRoom----', isOpen);
+};
 eventBus.on('handleRoom', (isOpen) => {
   showRoom.value = isOpen;
+  console.warn('handleRoom----', isOpen);
 });
 
 onBeforeUnmount(() => {
-  eventBus.all.clear();
+  console.log('onBeforeUnmount!!!');
+  eventBus.off('handleRoom', handleRoom);
 });
 </script>
 
