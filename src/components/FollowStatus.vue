@@ -50,11 +50,11 @@ const sendMessage = async () => {
     </div>
     <button
       @click="sendMessage"
-      class="button text-black bg-[#EFECE7] w-32 h-9 mr-2"
+      class="button text-black bg-secondary w-32 h-9 mr-2"
     >
       發送訊息
       <Loading v-show="pending" class="ml-1 h-4 w-4 animate-spin" />
     </button>
-    <button class="button text-black bg-[#EFECE7] w-32 h-9">取消追蹤</button>
+    <button class="button text-black bg-secondary w-32 h-9">取消追蹤</button>
   </div>
 </template>

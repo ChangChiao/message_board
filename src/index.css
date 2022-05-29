@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;600;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;600;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC&family=Paytone+One&display=swap');
 
 @tailwind base;
@@ -10,12 +10,16 @@
     @apply outline-none;
   }
 
-  input[type="radio"]{
-      @apply border;
+  input[type='radio'] {
+    @apply border;
   }
 
-  body  {
+  body {
     font-family: Noto Sans TC, sans-serif;
+    background-image: linear-gradient(#9b9893 1px, transparent 0px),
+      linear-gradient(90deg, #9b9893 1px, transparent 0px);
+    background-size: 4em 4em;
+    background-color: #efece7;
   }
 }
 
@@ -38,7 +42,7 @@
   .title {
     @apply border-2 flex items-center justify-center bg-white h-[64px] relative before:-z-10 before:w-full before:h-full before:bg-white before:content-[''] before:border-2 before:absolute before:-bottom-1.5 before:-left-1.5;
   }
-  .dot{
-      @apply w-[9px] h-[9px] mr-1.5 rounded-full border-[#707070] border;
+  .dot {
+    @apply w-[9px] h-[9px] mr-1.5 rounded-full border-[#707070] border;
   }
 }

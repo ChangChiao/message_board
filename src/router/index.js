@@ -30,6 +30,11 @@ const routes = [
         component: PostWall
       },
       {
+        path: '/:id',
+        name: 'post',
+        component: PostWall
+      },
+      {
         path: '/follow',
         name: 'follow',
         component: FollowList
