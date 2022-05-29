@@ -1,7 +1,7 @@
 <script setup>
 import dayjs from 'dayjs';
 import { storeToRefs } from 'pinia';
-import { defineProps, defineEmits, computed, ref } from 'vue';
+import { defineProps, defineEmits, ref } from 'vue';
 import { useUserStore } from '@/store';
 import { useToast } from 'vue-toastification';
 import Like from '@/icons/Like.vue';
@@ -22,14 +22,7 @@ const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD HH:mm');
 };
 
-const isSelf = computed(() => {
-  return props.postData.user._id === user.value._id;
-});
 const handleLike = () => {
-  if (isSelf.value) {
-    toast.error('自己不能按自己讚');
-    return;
-  }
   if (props.postData.likes.includes(user.value._id)) {
     emit('handleLike', { id: props.postData.id, setLike: false });
   } else {
@@ -47,18 +40,20 @@ const handleComment = () => {
 </script>
 <template>
   <div class="box-rounded w-full smw-[533px] min-h-[133px] p-6 mb-6">
-    <div class="flex">
-      <img
-        class="avatar w-[50px] h-[50px]"
-        :src="postData.user?.avatar"
-        alt=""
-      />
-      <div class="pl-3">
-        <p class="text-base text-bold">{{ postData.user?.name }}</p>
-        <p class="text-gray text-xs pt-1">
-          {{ formateTime(postData.createdAt) }}
-        </p>
-      </div>
+    <div class="cursor-pointer">
+      <router-link class="flex" :to="`/post/${postData.user._id}`">
+        <img
+          class="avatar w-[50px] h-[50px]"
+          :src="postData.user?.avatar"
+          alt=""
+        />
+        <div class="pl-3">
+          <p class="text-base text-bold">{{ postData.user?.name }}</p>
+          <p class="text-gray text-xs pt-1">
+            {{ formateTime(postData.createdAt) }}
+          </p>
+        </div>
+      </router-link>
     </div>
     <p class="py-2">{{ postData.content }}</p>
     <img
@@ -67,8 +62,8 @@ const handleComment = () => {
       :src="postData.cover"
       alt=""
     />
-    <div class="flex items-center">
-      <Like class="cursor-pointer" @click="handleLike" />
+    <div class="flex items-center pb-2">
+      <Like class="cursor-pointer text-primary" @click="handleLike" />
       <span class="pl-1">
         {{ postData.likes.length }}
       </span>

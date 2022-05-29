@@ -24,13 +24,13 @@ console.log('name', user.value.name);
         @mouseover="() => (isMenuShow = true)"
         @mouseleave="() => (isMenuShow = false)"
       >
-        <img class="avatar w-[30px] h-[30px]" :src="user.avatar" alt="" />
+        <img class="avatar w-[40px] h-[40px]" :src="user.avatar" alt="" />
         <span class="text-bold font-logo pl-2">{{ user.name }}</span>
         <div
           v-show="isMenuShow"
           class="absolute right-0 top-12 z-10 grid w-[180px] border-2 border-black text-center"
         >
-          <router-link :to="`/${11}`" class="bg-white py-2 hover:bg-secondary"
+          <router-link :to="`/post/${user._id}`" class="bg-white py-2 hover:bg-secondary"
             >我的貼文牆</router-link
           >
           <router-link

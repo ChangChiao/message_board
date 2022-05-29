@@ -29,7 +29,25 @@ const updateKeyword = (e) => {
   searchData.keyword = e.target.value;
 };
 
-const fetchData = async (needLoading = true) => {
+const fetchData = (needLoading = true) => {
+  isPersonal.value ? fetchSingle(needLoading) : fetchAll(needLoading);
+};
+
+const fetchSingle = async (needLoading) => {
+  needLoading && controlLoading(true);
+  const id = route.params.id;
+  try {
+    const result = await getAPIData(`/posts/user/${id}`);
+    const { status, posts } = result;
+    postList.length = 0;
+    status === 'success' && Object.assign(postList, posts);
+  } catch (error) {
+    console.log('error', error);
+  }
+  controlLoading(false);
+};
+
+const fetchAll = async (needLoading) => {
   needLoading && controlLoading(true);
   let queryString = `/?timeSort=${searchData.sort}`;
   searchData.keyword && (queryString += `&keyword=${searchData.keyword}`);
@@ -73,6 +91,10 @@ watch(
     fetchData();
   }
 );
+
+watch(route, () => {
+  fetchData();
+});
 
 provide('updateKeyword', updateKeyword);
 provide('searchData', searchData);
