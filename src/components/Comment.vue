@@ -19,16 +19,16 @@ const formateTime = (time) => {
     <div class="flex">
       <img
         class="avatar w-[50px] h-[50px]"
-        :src="comment?.avatar"
+        :src="comment.user?.avatar"
         alt=""
       />
       <div class="pl-3">
-        <p class="text-base text-bold">{{ comment?.name }}</p>
+        <p class="text-base text-bold">{{ comment.user?.name }}</p>
         <p class="text-gray text-xs pt-1">
           {{ formateTime(comment.createdAt) }}
         </p>
       </div>
     </div>
-    <p class="pl-14">{{ 111 }}</p>
+    <p class="pl-16">{{ comment.comment }}</p>
   </div>
 </template>

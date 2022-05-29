@@ -56,6 +56,17 @@ const handleLike = async ({ id, setLike }) => {
   }
 };
 
+const handleComment = async ({ id, content }) => {
+  try {
+    const result = await postAPIData(`/posts/${id}/comment`, {
+      comment: content
+    });
+    result.status === 'success' && fetchData(false);
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
 watch(
   () => searchData.sort,
   (first, second) => {
@@ -78,7 +89,11 @@ onMounted(() => {
     <SearchBar />
   </div>
   <template v-for="item in postList" :key="item._id">
-    <Post @handleLike="handleLike" :postData="item" />
+    <Post
+      @handleComment="handleComment"
+      @handleLike="handleLike"
+      :postData="item"
+    />
   </template>
   <NoRecord v-if="postList.length === 0" />
 </template>

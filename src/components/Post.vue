@@ -1,15 +1,16 @@
 <script setup>
 import dayjs from 'dayjs';
 import { storeToRefs } from 'pinia';
-import { defineProps, defineEmits, computed } from 'vue';
+import { defineProps, defineEmits, computed, ref } from 'vue';
 import { useUserStore } from '@/store';
 import { useToast } from 'vue-toastification';
 import Like from '@/icons/Like.vue';
 import Comment from '@/components/Comment';
+const content = ref('');
 const useStore = useUserStore();
 const { user } = storeToRefs(useStore);
 const toast = useToast();
-const emit = defineEmits(['handleLike']);
+const emit = defineEmits(['handleLike', 'handleComment']);
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   postData: {
@@ -34,6 +35,14 @@ const handleLike = () => {
   } else {
     emit('handleLike', { id: props.postData.id, setLike: true });
   }
+};
+
+const handleComment = () => {
+  if (content.value.length === 0) {
+    toast.error('請至少輸入一個字');
+    return;
+  }
+  emit('handleComment', { id: props.postData.id, content: content.value });
 };
 </script>
 <template>
@@ -70,16 +79,23 @@ const handleLike = () => {
         class="w-[calc(100%-60px)] h-10 border-2 flex justify-between items-center"
       >
         <input
+          @keyup.enter="handleComment"
           class="pl-2 w-[calc(100%-6rem)]"
           maxlength="100"
           type="text"
           placeholder="留言..."
+          v-model="content"
         />
-        <button class="bg-primary h-full w-24 text-white">留言</button>
+        <button
+          @click="handleComment"
+          class="bg-primary h-full w-24 text-white"
+        >
+          留言
+        </button>
       </div>
     </div>
     <div class="pt-10">
-      <template v-for="item in 2" :key="item">
+      <template v-for="item in postData.comments" :key="item._id">
         <Comment :comment="item" />
       </template>
     </div>
