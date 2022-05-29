@@ -52,7 +52,7 @@ const fetchAll = async (needLoading) => {
   let queryString = `/?timeSort=${searchData.sort}`;
   searchData.keyword && (queryString += `&keyword=${searchData.keyword}`);
   try {
-    const result = await getAPIData('/posts', queryString);
+    const result = await getAPIData('/posts' + queryString);
     const { status, posts } = result;
     postList.length = 0;
     status === 'success' && Object.assign(postList, posts);
@@ -107,7 +107,11 @@ onMounted(() => {
 <template>
   <FollowStatus v-if="isPersonal" />
   <div v-else class="md:flex justify-between">
-    <Select v-model="searchData.sort" :option="selectOption" />
+    <Select
+      v-model="searchData.sort"
+      @change="fetchAll"
+      :option="selectOption"
+    />
     <SearchBar />
   </div>
   <template v-for="item in postList" :key="item._id">
