@@ -39,8 +39,8 @@ console.log('isFollowed', isFollowed.value);
 const handleFollow = async () => {
   try {
     const queryWay = isFollowed.value
-      ? deleteAPIData(`/posts/${paramId.value}/unfollow`)
-      : postAPIData(`/posts/${paramId.value}/follow`);
+      ? deleteAPIData(`/users/${paramId.value}/unfollow`)
+      : postAPIData(`/users/${paramId.value}/follow`);
     const res = await queryWay;
     if (res.status === 'success') {
       useStore.getUser();
