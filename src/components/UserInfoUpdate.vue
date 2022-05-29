@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, watch } from 'vue';
+import { reactive, watch, inject } from 'vue';
 import { useToast } from 'vue-toastification';
 import UploadFile from '../components/UploadFile.vue';
 import { patchAPIData } from '../utils/api/ajax.js';
@@ -10,6 +10,7 @@ const validateStore = useValidateStore();
 const useStore = useUserStore();
 const { validateList } = storeToRefs(validateStore);
 const { user } = storeToRefs(useStore);
+const controlLoading = inject('controlLoading');
 const toast = useToast();
 const initialState = {
   name: '',
@@ -50,6 +51,7 @@ const updateInfo = async () => {
     return;
   }
   try {
+    controlLoading(true);
     const result = await patchAPIData('/users/profile', { ...editContent });
     reset();
     const { status, user: updatedUser } = result;
@@ -58,7 +60,10 @@ const updateInfo = async () => {
     }
     toast.success('修改成功');
   } catch (error) {
-    console.log('error', error);
+    const msg = error.response.data.message;
+    msg && toast.error(msg);
+  } finally {
+    controlLoading(false);
   }
 };
 
@@ -68,9 +73,6 @@ watch(
     editContent.avatar = user?.value.avatar;
     editContent.name = user?.value.name;
     editContent.gender = user?.value.gender;
-    setTimeout(() => {
-      console.log('editContent.gender', editContent.gender);
-    }, 2000);
   },
   { immediate: true }
 );

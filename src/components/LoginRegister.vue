@@ -1,15 +1,16 @@
 <script setup>
-// import { useToast } from 'vue-toastification';
-import { reactive, onBeforeUnmount } from 'vue';
+import { useToast } from 'vue-toastification';
+import { reactive, onBeforeUnmount, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import Input from '../components/Input.vue';
 import { postAPIData } from '@/utils/api/ajax';
 import { useValidateStore, useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 const validateStore = useValidateStore();
-// const toast = useToast();
+const toast = useToast();
 const useStore = useUserStore();
 const { validateList } = storeToRefs(validateStore);
+const controlLoading = inject('controlLoading');
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['setComp']);
 const router = useRouter();
@@ -30,6 +31,7 @@ const handleSubmit = async () => {
     return;
   }
   try {
+    controlLoading(true);
     const res = await postAPIData('/users/sign_up', loginData);
     const {
       status,
@@ -41,8 +43,10 @@ const handleSubmit = async () => {
     }
     router.push('/');
   } catch (error) {
-    // toast.error()
-    console.log('error', error);
+    const msg = error.response.data.message;
+    msg && toast.error(msg);
+  } finally {
+    controlLoading(false);
   }
 };
 

@@ -16,18 +16,20 @@ const formateTime = (time) => {
 
 <template>
   <div class="bg-secondary/50 p-2 rounded-md mb-4">
-    <div class="flex">
-      <img
-        class="avatar w-[50px] h-[50px]"
-        :src="comment.user?.avatar"
-        alt=""
-      />
-      <div class="pl-3">
-        <p class="text-base text-bold">{{ comment.user?.name }}</p>
-        <p class="text-gray text-xs pt-1">
-          {{ formateTime(comment.createdAt) }}
-        </p>
-      </div>
+    <div class="cursor-pointer">
+      <router-link class="flex" :to="`/post/${comment.user._id}`">
+        <img
+          class="avatar w-[50px] h-[50px]"
+          :src="comment.user?.avatar"
+          alt=""
+        />
+        <div class="pl-3">
+          <p class="text-base text-bold">{{ comment.user?.name }}</p>
+          <p class="text-gray text-xs pt-1">
+            {{ formateTime(comment.createdAt) }}
+          </p>
+        </div>
+      </router-link>
     </div>
     <p class="pl-16">{{ comment.comment }}</p>
   </div>

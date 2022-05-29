@@ -1,16 +1,19 @@
 <script setup>
 import { getAPIData, deleteAPIData } from '@/utils/api/ajax';
 import PoseLikeListItem from '../components/PoseLikeListItem.vue';
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, inject } from 'vue';
 const likeList = reactive([]);
-
+const controlLoading = inject('controlLoading');
 const getFollowList = async () => {
   try {
+    controlLoading(true);
     likeList.length = 0;
     const res = await getAPIData('/users/like_list');
     res.status === 'success' && Object.assign(likeList, res.likeList);
   } catch (error) {
     console.log('error', error);
+  } finally {
+    controlLoading(false);
   }
 };
 

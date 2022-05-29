@@ -1,9 +1,9 @@
 <script setup>
 import { useToast } from 'vue-toastification';
-
-import { reactive } from 'vue';
+import { reactive, inject } from 'vue';
 import { patchAPIData } from '@/utils/api/ajax';
 import Input from '../components/Input.vue';
+const controlLoading = inject('controlLoading');
 const toast = useToast();
 const updateData = reactive({
   password: '',
@@ -15,6 +15,7 @@ const resetPassword = async () => {
     return;
   }
   try {
+    controlLoading(true);
     const res = await patchAPIData('/users/update_password', updateData);
     const {
       status,
@@ -27,7 +28,10 @@ const resetPassword = async () => {
       updateData.confirmPassword = '';
     }
   } catch (error) {
-    console.log('error', error);
+    const msg = error.response.data.message;
+    msg && toast.error(msg);
+  } finally {
+    controlLoading(false);
   }
 };
 </script>

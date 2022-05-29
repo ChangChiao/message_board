@@ -63,7 +63,7 @@ const handleComment = () => {
       :src="postData.cover"
       alt=""
     />
-    <div class="flex items-center pb-2">
+    <div class="flex items-center py-2">
       <Like class="cursor-pointer text-primary" @click="handleLike" />
       <span class="pl-1">
         {{ postData.likes.length }}
