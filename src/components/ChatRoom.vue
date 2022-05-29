@@ -5,9 +5,10 @@ import ChatRoomMessage from './ChatRoomMessage.vue';
 import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
 import Back from '../icons/Back.vue';
+import Loading from '../icons/Loading.vue';
 import eventBus from '../utils/eventBus';
-import { throttle, deviceType } from '../utils/common';
-import { API_URL } from '../global/constant';
+import { deviceType } from '../utils/common';
+import { API_URL } from '@/global/constant';
 import { storeToRefs } from 'pinia';
 import { useRoomStore, useUserStore } from '@/store';
 import { useRouter } from 'vue-router';
@@ -18,15 +19,19 @@ const roomStore = useRoomStore();
 const { room } = storeToRefs(roomStore);
 const { user } = storeToRefs(useStore);
 const router = useRouter();
+const isLoading = ref(false);
+const typingFlag = ref(false);
 const messageContainer = ref(null);
 const fetchAllFlag = ref(false);
 const newMsgFlag = ref(false);
 const flagHistory = ref(false);
 const scrollRecord = ref(0);
 const messageList = reactive([]);
+let timer = null;
 
 const token = localStorage.getItem('token');
 if (!token) {
+  toast.error('請先登入喔！');
   router.push('/');
 }
 
@@ -66,6 +71,7 @@ socket.on('chatMessage', (msg) => {
 
 // 接收歷史訊息
 socket.on('history', (msgList) => {
+  isLoading.value = false;
   console.log('接收到歷史訊息', msgList);
   const newArray = [...msgList, ...messageList];
   Object.assign(messageList, newArray);
@@ -85,6 +91,11 @@ const scrollToCorrect = async () => {
   messageContainer.value.scrollTop =
     messageContainer.value.scrollHeight - scrollRecord.value;
 };
+
+socket.on('typing', (boolean) => {
+  typingFlag.value = boolean;
+});
+
 // 接收錯誤
 socket.on('error', (error) => {
   toast.error(error);
@@ -97,9 +108,25 @@ const getHistory = () => {
   const info = {
     lastTime: messageList[0]?.createdAt
   };
-  console.warn('emit!!!!!!!!!!!!!!');
-  console.warn('---', socket.connected);
+  isLoading.value = true;
+  console.warn('getHistory---', socket.connected);
   socket.emit('history', info);
+};
+
+const endTyping = () => {
+  socket.emit('typing', false);
+};
+
+const userTyping = (key) => {
+  if (key === 'Enter') {
+    endTyping();
+    return;
+  }
+  socket.emit('typing', true);
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    endTyping();
+  }, 1500);
 };
 
 const sendMessage = (msg) => {
@@ -108,13 +135,10 @@ const sendMessage = (msg) => {
     sender: user.value._id
   };
   socket.emit('chatMessage', sendMsg);
-  //   scrollBottom();
 };
 
 const scrollBottom = async () => {
-  console.log(nextTick);
   await nextTick();
-  //   console.log('messageContainer', messageContainer);
   newMsgFlag.value = false;
   messageContainer.value.scrollTop = messageContainer.value?.scrollHeight;
 };
@@ -129,7 +153,7 @@ const detectTop = () => {
     () => {
       if (messageContainer.value.scrollTop === 0) {
         scrollRecord.value = messageContainer.value.scrollHeight;
-        throttle(getHistory, 1000)();
+        getHistory();
       }
     },
     false
@@ -139,9 +163,16 @@ const detectTop = () => {
 const toPrevPage = () => {
   router.go(-1);
 };
+const provideDefault = () => {
+  console.log('room', room);
+  return (
+    room.value.avatar ??
+    new URL('../assets/images/user_default.png', import.meta.url)
+  );
+};
 
 onMounted(() => {
-  console.warn('mounted', deviceType());
+  console.warn('mounted');
   // 鎖ios橡皮筋效果
   deviceType() !== 'desktop' &&
     (document.body.style = 'overflow: hidden;position:fixed');
@@ -155,6 +186,7 @@ onBeforeUnmount(() => {
   socket.off();
   socket.disconnect();
   document.body.style = '';
+  clearTimeout(timer);
 });
 </script>
 
@@ -163,11 +195,11 @@ onBeforeUnmount(() => {
     class="md:fixed md:border-2 bottom-0 right-10 w-screen md:w-[338px] overflow-hidden h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg"
   >
     <div
-      class="h-14 flex px-2 md:px-4 py-2 bg-white  justify-between items-center border-b-2"
+      class="h-14 flex px-2 md:px-4 py-2 bg-white justify-between items-center border-b-2"
     >
       <div class="flex items-center">
         <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
-        <img class="avatar w-10 h-10" :src="room.avatar" alt="" />
+        <img class="avatar w-10 h-10" :src="provideDefault()" alt="" />
         <span class="pl-4 font-bold">{{ room.name }}</span>
       </div>
       <span @click="closeRoom" class="text-xs text-gray"
@@ -186,6 +218,12 @@ onBeforeUnmount(() => {
       <div class="text-center py-2 text-sm" v-if="messageList.length === 0">
         開始聊天吧！
       </div>
+      <div
+        class="flex items-center justify-center pt-2 text-slate-700"
+        v-if="isLoading"
+      >
+        載入中<Loading class="ml-1 h-4 w-4 animate-spin" />
+      </div>
       <template v-for="message in messageList" :key="message._id">
         <chat-room-message :message="message" />
       </template>
@@ -197,7 +235,7 @@ onBeforeUnmount(() => {
     >
       您有新訊息
     </div>
-    <chat-room-input-box @sendMessage="sendMessage" />
+    <chat-room-input-box @userTyping="userTyping" @sendMessage="sendMessage" />
   </div>
 </template>
 

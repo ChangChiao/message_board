@@ -1,10 +1,11 @@
 <script setup>
-import { defineProps, toRefs } from 'vue';
+import { toRefs, defineProps } from 'vue';
 import { useToast } from 'vue-toastification';
 import dayjs from 'dayjs';
 import eventBus from '../utils/eventBus';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { deviceType } from '../utils/common';
 import { useRoomStore } from '@/store';
 const roomStore = useRoomStore();
 const toast = useToast();
@@ -19,20 +20,23 @@ const props = defineProps({
 });
 const { name, message: msg, avatar, roomId, _id } = toRefs(props.room);
 const formateTime = (time) => {
-  return dayjs(time).format('YYYY/MM/DD ');
+  return dayjs(time).format('YYYY/MM/DD HH:MM');
 };
-const isMobile = () => {
-  return document.body.clientWidth < 768;
+const provideDefault = () => {
+  return (
+    avatar.value ??
+    new URL('../assets/images/user_default.png', import.meta.url)
+  );
 };
 const goChatRoom = () => {
-  console.log('channelId', roomId.value);
   if (room.value.roomId && room.value.roomId !== roomId.value) {
     toast.error('您一次只能跟一個人聊天');
     return;
   }
   roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
-  if (isMobile()) {
-    router.push('/chatroom');
+  console.log('deviceType()', deviceType());
+  if (deviceType() !== 'desktop') {
+    router.push('/chat-room');
     return;
   }
   eventBus.emit('handleRoom', true);
@@ -45,7 +49,7 @@ const goChatRoom = () => {
     class="box-rounded flex items-baseline p-4 h-[77px] mb-4 justify-between cursor-pointer"
   >
     <div class="flex">
-      <img class="w-10 h-10 avatar" :src="avatar" alt="avatar" />
+      <img class="w-10 h-10 avatar" :src="provideDefault()" alt="avatar" />
       <div class="flex-1 pl-2">
         <p class="font-bold">{{ name }}</p>
         <p
