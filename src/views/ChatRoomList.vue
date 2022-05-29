@@ -1,10 +1,11 @@
 <script setup>
-import { reactive, onMounted, onBeforeUnmount } from 'vue';
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
 import { postAPIData } from '@/utils/api/ajax';
 import ChatRoomListItem from '@/components/ChatRoomListItem.vue';
 import eventBus from '../utils/eventBus';
+import Loading from '@/icons/Loading.vue';
 const chatList = reactive([]);
-
+const pending = ref(false);
 const updateChatRecord = ({ roomId, msg }) => {
   const targetIndex = chatList.findIndex((item) => item.roomId === roomId);
   targetIndex > -1 && (chatList[targetIndex].message = [msg]);
@@ -13,6 +14,7 @@ const updateChatRecord = ({ roomId, msg }) => {
 eventBus.on('updateChatRecord', updateChatRecord);
 
 const queryRoomList = async () => {
+  pending.value = true;
   try {
     const res = await postAPIData('/chat/chat-record');
     const { status, chatRecord } = res;
@@ -23,6 +25,8 @@ const queryRoomList = async () => {
     }
   } catch (error) {
     console.log('error', error);
+  } finally {
+    pending.value = false;
   }
 };
 
@@ -80,6 +84,7 @@ onBeforeUnmount(() => {
   <section>
     <h1 class="title">聊天室</h1>
     <ul class="pt-4">
+      <li v-show="pending" class="text-center py-6">載入中...<Loading /></li>
       <template v-for="room in chatList" :key="room._id">
         <chat-room-list-item :room="room" />
       </template>

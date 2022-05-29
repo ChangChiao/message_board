@@ -202,7 +202,7 @@ onBeforeUnmount(() => {
         <img class="avatar w-10 h-10" :src="provideDefault()" alt="" />
         <span class="pl-4 font-bold">{{ room.name }}</span>
       </div>
-      <span @click="closeRoom" class="text-xs text-gray"
+      <span v-if="typingFlag" class="text-xs text-gray"
         >對方正在輸入中...</span
       >
       <Close

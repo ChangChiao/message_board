@@ -14,12 +14,8 @@ export default defineStore('user', {
     async getUser () {
       try {
         const result = await getAPIData('/users/profile');
-        const { name, avatar, gender, _id } = result.user;
         console.log('user', result.user);
-        this.user.name = name;
-        this.user.avatar = avatar;
-        this.user.gender = gender;
-        this.user._id = _id;
+        result.status === 'success' && (this.user = result.user);
       } catch (error) {
         console.log('error', error);
       }
