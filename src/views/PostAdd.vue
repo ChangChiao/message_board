@@ -22,7 +22,7 @@ const imageError = reactive({
 
 const addPost = async () => {
   try {
-    await postAPIData('/post', { ...editContent });
+    await postAPIData('/posts', { ...editContent });
     reset();
     router.push('/');
   } catch (error) {

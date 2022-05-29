@@ -26,11 +26,11 @@ const { user } = storeToRefs(useStore);
             :src="user.avatar"
             alt=""
           />
-          <span class="pl-4 text-bold">{{ user.name }}</span>
+          <span class="pl-4 font-bold">{{ user.name }}</span>
         </router-link>
       </li>
       <li class="pb-4">
-        <router-link class="flex items-center w-full" to="/follow">
+        <router-link class="flex items-center w-full hover:text-primary" to="/follow">
           <div
             class="w-[50px] h-[50px] border-2 flex items-center justify-center bg-sky rounded-full"
           >
@@ -40,7 +40,7 @@ const { user } = storeToRefs(useStore);
         </router-link>
       </li>
       <li class="pb-4">
-        <router-link class="flex items-center w-full" to="/likes">
+        <router-link class="flex items-center w-full hover:text-primary" to="/likes">
           <div
             class="w-[50px] h-[50px] border-2 flex items-center justify-center bg-sky rounded-full"
           >
@@ -50,7 +50,7 @@ const { user } = storeToRefs(useStore);
         </router-link>
       </li>
       <li class="">
-        <router-link class="flex items-center w-full" to="/chatroomlist">
+        <router-link class="flex items-center w-full hover:text-primary" to="/chatroomlist">
           <div
             class="w-[50px] h-[50px] border-2 flex items-center justify-center bg-sky rounded-full"
           >

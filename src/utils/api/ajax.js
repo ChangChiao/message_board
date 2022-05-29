@@ -33,6 +33,12 @@ export const patchAPIData = (path, sendData = {}) => {
   return api.patch(API_URL + path, sendData, { headers });
 };
 
+export const deleteAPIData = (path) => {
+  const headers = getAuthorizationHeader();
+  console.log('headers', headers);
+  return api.delete(API_URL + path, { headers });
+};
+
 export const postFormData = (path, sendData = {}) => {
   const headers = getAuthorizationImgHeader();
   // console.log('#####IMGUR', sendData, headers);

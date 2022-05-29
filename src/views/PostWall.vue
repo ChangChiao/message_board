@@ -1,6 +1,7 @@
 <script setup>
-import { onMounted, reactive, provide, watch, inject } from 'vue';
-import { getAPIData } from '../utils/api/ajax.js';
+import { onMounted, computed, reactive, provide, watch, inject } from 'vue';
+import { getAPIData, postAPIData, deleteAPIData } from '../utils/api/ajax.js';
+import { useRoute } from 'vue-router';
 import Post from '../components/Post.vue';
 import SearchBar from '../components/SearchBar.vue';
 import Select from '../components/Select.vue';
@@ -8,6 +9,11 @@ import FollowStatus from '../components/FollowStatus.vue';
 import NoRecord from '../components/NoRecord.vue';
 const controlLoading = inject('controlLoading');
 const postList = reactive([]);
+const route = useRoute();
+
+const isPersonal = computed(() => {
+  return route.path.startsWith('/post');
+});
 
 const selectOption = [
   { key: 'desc', content: '從新到舊' },
@@ -23,8 +29,8 @@ const updateKeyword = (e) => {
   searchData.keyword = e.target.value;
 };
 
-const fetchData = async () => {
-  controlLoading(true);
+const fetchData = async (needLoading = true) => {
+  needLoading && controlLoading(true);
   let queryString = `/?timeSort=${searchData.sort}`;
   searchData.keyword && (queryString += `&keyword=${searchData.keyword}`);
   try {
@@ -36,6 +42,18 @@ const fetchData = async () => {
     console.log('error', error);
   }
   controlLoading(false);
+};
+
+const handleLike = async ({ id, setLike }) => {
+  const queryWay = setLike
+    ? postAPIData(`/posts/${id}/likes`)
+    : deleteAPIData(`/posts/${id}/likes`);
+  try {
+    const result = await queryWay;
+    result.status === 'success' && fetchData(false);
+  } catch (error) {
+    console.log('error', error);
+  }
 };
 
 watch(
@@ -54,13 +72,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <FollowStatus />
-  <div class="md:flex justify-between">
+  <FollowStatus v-if="isPersonal" />
+  <div v-else class="md:flex justify-between">
     <Select v-model="searchData.sort" :option="selectOption" />
     <SearchBar />
   </div>
   <template v-for="item in postList" :key="item._id">
-    <Post :postData="item" />
+    <Post @handleLike="handleLike" :postData="item" />
   </template>
   <NoRecord v-if="postList.length === 0" />
 </template>

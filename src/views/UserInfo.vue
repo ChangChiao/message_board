@@ -32,7 +32,7 @@ const setMenuType = (val) => {
         重設密碼
       </li>
     </ul>
-    <div class="min-h-[350px] w-full rounded-r-md border-2 px-[80px] py-8 ">
+    <div class="min-h-[350px] bg-white w-full rounded-r-md border-2 px-[80px] py-8 ">
       <UserInfoUpdate v-if="menuType === 0" />
       <UserInfoReset v-else />
     </div>

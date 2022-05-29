@@ -30,7 +30,7 @@ const routes = [
         component: PostWall
       },
       {
-        path: '/:id',
+        path: '/post/:id',
         name: 'post',
         component: PostWall
       },
