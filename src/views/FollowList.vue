@@ -6,6 +6,7 @@ const followList = reactive([]);
 
 const getFollowList = async () => {
   try {
+    followList.length = 0;
     const res = await getAPIData('/users/following');
     res.status === 'success' && Object.assign(followList, res.following);
   } catch (error) {

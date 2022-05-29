@@ -2,7 +2,7 @@
 import { useToast } from 'vue-toastification';
 
 import { reactive } from 'vue';
-import { postAPIData } from '@/utils/api/ajax';
+import { patchAPIData } from '@/utils/api/ajax';
 import Input from '../components/Input.vue';
 const toast = useToast();
 const updateData = reactive({
@@ -15,7 +15,7 @@ const resetPassword = async () => {
     return;
   }
   try {
-    const res = await postAPIData('/users/update_password', updateData);
+    const res = await patchAPIData('/users/update_password', updateData);
     const {
       status,
       user: { token }

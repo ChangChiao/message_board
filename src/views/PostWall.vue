@@ -65,7 +65,7 @@ const fetchAll = async (needLoading) => {
 const handleLike = async ({ id, setLike }) => {
   const queryWay = setLike
     ? postAPIData(`/posts/${id}/likes`)
-    : deleteAPIData(`/posts/${id}/likes`);
+    : deleteAPIData(`/posts/${id}/unlikes`);
   try {
     const result = await queryWay;
     result.status === 'success' && fetchData(false);

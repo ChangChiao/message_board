@@ -30,7 +30,7 @@ const handleSubmit = async () => {
     return;
   }
   try {
-    const res = await postAPIData('/users/sign-in', loginData);
+    const res = await postAPIData('/users/sign_in', loginData);
     const {
       status,
       user: { token, name }
