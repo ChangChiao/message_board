@@ -36,6 +36,7 @@ const handleComment = () => {
     return;
   }
   emit('handleComment', { id: props.postData.id, content: content.value });
+  content.value = '';
 };
 </script>
 <template>

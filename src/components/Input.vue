@@ -32,9 +32,7 @@ const vaildFail = ref(null);
 const { validId, modelValue, vaildField } = toRefs(props);
 const vaildDate = () => {
   for (const vaild of vaildField.value) {
-    console.log('vaild', vaild);
     const rule = regex[vaild];
-    console.log('rule', rule(modelValue.value));
     if (!rule(modelValue.value)) {
       setError();
       vaildFail.value = vaild;

@@ -3,7 +3,7 @@ export default {
     return value !== '' && value !== undefined && value !== null;
   },
   name (value) {
-    return /[a-zA-Z0-9]{2,12}$/.test(value);
+    return value?.length >= 2;
   },
   password (value) {
     return /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]{8,20}$/.test(value);

@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
   <section>
     <h1 class="title">聊天室</h1>
     <ul class="pt-4">
-      <li v-show="pending" class="text-center py-6">載入中...<Loading /></li>
+      <li v-show="pending" class="text-center flex items-center justify-center py-6">載入中...<Loading class="pl-1" /></li>
       <template v-for="room in chatList" :key="room._id">
         <chat-room-list-item :room="room" />
       </template>
