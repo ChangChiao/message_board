@@ -2,16 +2,18 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import { postAPIData, getAPIData, deleteAPIData } from '@/utils/api/ajax';
 import { storeToRefs } from 'pinia';
-import eventBus from '../utils/eventBus';
 import { useRoomStore, useUserStore } from '@/store';
 import { deviceType } from '@/utils/common';
+import { useToast } from 'vue-toastification';
 import { useRouter, useRoute } from 'vue-router';
 import Loading from '@/icons/Loading';
+const toast = useToast();
 const router = useRouter();
 const route = useRoute();
 const useStore = useUserStore();
 const roomStore = useRoomStore();
 const { user } = storeToRefs(useStore);
+const { room } = storeToRefs(roomStore);
 const pending = ref(false);
 const profile = reactive({});
 const paramId = computed(() => route.params.id);
@@ -59,16 +61,19 @@ const sendMessage = async () => {
   try {
     pending.value = true;
     const res = await postAPIData('/chat/room-info', sendData);
-    const { status, roomId, name, avatar, _id } = res;
+    const { status, roomId, name, avatar } = res;
     if (status === 'success') {
       console.log('res', res);
-      roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
-      eventBus.emit('handleRoom', true);
+      if (room.value.length === 3) {
+        toast.error('您最多只能跟三個人聊天呦！');
+        return;
+      }
+      const roomObj = { roomId, name, avatar };
+      roomStore.updateRoom([...room.value, roomObj]);
       if (deviceType() !== 'desktop') {
         router.push('/chat-room');
         return;
       }
-      eventBus.emit('handleRoom', true);
     }
   } catch (error) {
     console.log('error', error);

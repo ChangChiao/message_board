@@ -1,6 +1,14 @@
 <script setup>
 import { useToast } from 'vue-toastification';
-import { nextTick, reactive, onMounted, onBeforeUnmount, ref } from 'vue';
+import {
+  defineProps,
+  nextTick,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+  toRefs,
+  ref
+} from 'vue';
 import ChatRoomMessage from './ChatRoomMessage.vue';
 import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
@@ -29,6 +37,19 @@ const scrollRecord = ref(0);
 const messageList = reactive([]);
 let timer = null;
 
+const props = defineProps({
+  roomInfo: {
+    type: Object,
+    required: true,
+    default: () => {}
+  }
+});
+
+const { roomInfo } = toRefs(props);
+console.log('roomIwewwewernfo', props.roomInfo.roomId);
+console.log('roomInfo', roomInfo.value);
+console.log('xxx', roomInfo.value.name);
+console.log('yyy', roomInfo.value.roomId);
 const token = localStorage.getItem('token');
 if (!token) {
   toast.error('請先登入喔！');
@@ -39,7 +60,7 @@ if (!token) {
 const socket = io(`${API_URL}/chat`, {
   query: {
     token: localStorage.getItem('token'),
-    room: room.value.roomId
+    room: roomInfo.value?.roomId
   },
   // autoConnect: false,
   forceNew: true
@@ -53,12 +74,12 @@ socket.on('connect', () => {
   }, 200);
 });
 
-socket.emit('joinRoom', room.value.roomId);
+socket.emit('joinRoom', roomInfo.value?.roomId);
 // 接收到別人傳的訊息
 socket.on('chatMessage', (msg) => {
   console.log('接收到別人傳的訊息', msg);
   messageList.push(msg);
-  eventBus.emit('updateChatRecord', { roomId: room.value.roomId, msg });
+  eventBus.emit('updateChatRecord', { roomId: roomInfo.value?.roomId, msg });
   if (
     messageContainer.value.scrollHeight - messageContainer.value.scrollTop >
     messageContainer.value.clientHeight
@@ -103,7 +124,7 @@ socket.on('error', (error) => {
 });
 
 const getHistory = () => {
-  console.log('getHistory', fetchAllFlag.value);
+  console.warn('getHistory', roomInfo.value.name);
   if (fetchAllFlag.value) return;
   const info = {
     lastTime: messageList[0]?.createdAt
@@ -144,7 +165,10 @@ const scrollBottom = async () => {
 };
 
 const closeRoom = () => {
-  eventBus.emit('handleRoom', false);
+  const keepRoom = room.value.filter(
+    (room) => room.roomId !== roomInfo.value?.roomId
+  );
+  roomStore.updateRoom(keepRoom);
 };
 
 const detectTop = () => {
@@ -166,7 +190,7 @@ const toPrevPage = () => {
 const provideDefault = () => {
   console.log('room', room);
   return (
-    room.value.avatar ??
+    roomInfo.value?.avatar ??
     new URL('../assets/images/user_default.png', import.meta.url)
   );
 };
@@ -181,8 +205,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   console.warn('onBeforeUnmount');
-  roomStore.updateRoom({});
-  socket.emit('leaveRoom', room.value.roomId);
+  // roomStore.updateRoom({});
+  socket.emit('leaveRoom', roomInfo.value?.roomId);
   socket.off();
   socket.disconnect();
   document.body.style = '';
@@ -192,7 +216,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    class="md:fixed md:border-2 bottom-0 right-10 w-screen md:w-[338px] overflow-hidden h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg"
+    class="md:border-2 md:ml-4 md:w-[338px] overflow-hidden h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg relative"
   >
     <div
       class="h-14 flex px-2 md:px-4 py-2 bg-white justify-between items-center border-b-2"
@@ -200,11 +224,9 @@ onBeforeUnmount(() => {
       <div class="flex items-center">
         <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
         <img class="avatar w-10 h-10" :src="provideDefault()" alt="" />
-        <span class="pl-4 font-bold">{{ room.name }}</span>
+        <span class="pl-4 font-bold">{{ roomInfo.name }}</span>
       </div>
-      <span v-if="typingFlag" class="text-xs text-gray"
-        >對方正在輸入中...</span
-      >
+      <span v-if="typingFlag" class="text-xs text-gray">對方正在輸入中...</span>
       <Close
         class="cursor-pointer hidden md:block hover:opacity-50"
         @click="closeRoom"

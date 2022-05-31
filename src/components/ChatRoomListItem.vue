@@ -18,7 +18,7 @@ const props = defineProps({
     default: () => {}
   }
 });
-const { name, message: msg, avatar, roomId, _id } = toRefs(props.room);
+const { name, message: msg, avatar, roomId } = toRefs(props.room);
 const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD HH:MM');
 };
@@ -29,11 +29,13 @@ const provideDefault = () => {
   );
 };
 const goChatRoom = () => {
-  if (room.value.roomId && room.value.roomId !== roomId.value) {
-    toast.error('您一次只能跟一個人聊天');
+  if (room.value.length === 3) {
+    toast.error('您最多只能跟三個人聊天呦！');
     return;
   }
-  roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
+  const roomObj = { roomId, name, avatar };
+  console.log('roomObj====', roomObj);
+  roomStore.updateRoom([...room.value, roomObj]);
   console.log('deviceType()', deviceType());
   if (deviceType() !== 'desktop') {
     router.push('/chat-room');
