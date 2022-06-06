@@ -1,5 +1,4 @@
 <script setup>
-import { onBeforeUnmount } from 'vue';
 import ChatRoom from './ChatRoom.vue';
 // import eventBus from '@/utils/eventBus';
 
@@ -8,24 +7,13 @@ import { useRoomStore } from '@/store';
 
 const roomStore = useRoomStore();
 const { room } = storeToRefs(roomStore);
-// const handleRoom = (isOpen) => {
-//   showRoom.value = isOpen;
-//   console.warn('handleRoom----', isOpen);
-// };
-// eventBus.on('handleRoom', handleRoom);
 
-onBeforeUnmount(() => {
-  console.log('onBeforeUnmount!!!');
-  roomStore.updateRoom([]);
-  // eventBus.off('handleRoom', handleRoom);
-});
 </script>
 
 <template>
-  <div class="flex justify-end w-4/5 fixed bottom-0">
+  <div class="pointer-events-none fixed bottom-0 right-10 hidden w-4/5 lg:flex lg:items-end lg:justify-end">
     <template v-for="item in room" :key="item.roomId">
       <chat-room :roomInfo="item" />
     </template>
   </div>
-  <!-- <chat-room v-if="showRoom" /> -->
 </template>
