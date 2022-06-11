@@ -1,13 +1,22 @@
 <script setup>
 import { useToast } from 'vue-toastification';
-import { nextTick, reactive, onMounted, onBeforeUnmount, ref } from 'vue';
+import {
+  defineProps,
+  nextTick,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+  toRefs,
+  ref
+} from 'vue';
 import ChatRoomMessage from './ChatRoomMessage.vue';
 import ChatRoomInputBox from './ChatRoomInputBox.vue';
 import Close from '../icons/Close.vue';
 import Back from '../icons/Back.vue';
+import Minus from '../icons/Minus.vue';
+import Plus from '../icons/Plus.vue';
 import Loading from '../icons/Loading.vue';
 import eventBus from '../utils/eventBus';
-import { deviceType } from '../utils/common';
 import { API_URL } from '@/global/constant';
 import { storeToRefs } from 'pinia';
 import { useRoomStore, useUserStore } from '@/store';
@@ -29,6 +38,15 @@ const scrollRecord = ref(0);
 const messageList = reactive([]);
 let timer = null;
 
+const props = defineProps({
+  roomInfo: {
+    type: Object,
+    required: true,
+    default: () => {}
+  }
+});
+
+const { roomId, name, avatar, isOpen } = toRefs(props.roomInfo);
 const token = localStorage.getItem('token');
 if (!token) {
   toast.error('請先登入喔！');
@@ -39,26 +57,22 @@ if (!token) {
 const socket = io(`${API_URL}/chat`, {
   query: {
     token: localStorage.getItem('token'),
-    room: room.value.roomId
+    room: roomId.value
   },
-  // autoConnect: false,
-  forceNew: true
+  auth: {
+    token
+  }
 });
 // 建立連線
 socket.on('connect', () => {
-  console.log('connect----');
-  // TODO 不用setTimeout getHistory會偶發性失效
-  setTimeout(() => {
-    getHistory();
-  }, 200);
+  getHistory();
 });
 
-socket.emit('joinRoom', room.value.roomId);
 // 接收到別人傳的訊息
 socket.on('chatMessage', (msg) => {
   console.log('接收到別人傳的訊息', msg);
   messageList.push(msg);
-  eventBus.emit('updateChatRecord', { roomId: room.value.roomId, msg });
+  eventBus.emit('updateChatRecord', { roomId: roomId.value, msg });
   if (
     messageContainer.value.scrollHeight - messageContainer.value.scrollTop >
     messageContainer.value.clientHeight
@@ -103,7 +117,6 @@ socket.on('error', (error) => {
 });
 
 const getHistory = () => {
-  console.log('getHistory', fetchAllFlag.value);
   if (fetchAllFlag.value) return;
   const info = {
     lastTime: messageList[0]?.createdAt
@@ -144,7 +157,13 @@ const scrollBottom = async () => {
 };
 
 const closeRoom = () => {
-  eventBus.emit('handleRoom', false);
+  const keepRoom = room.value.filter((room) => room.roomId !== roomId.value);
+  roomStore.updateRoom(keepRoom);
+};
+
+const handleOpen = () => {
+  const updatedRoom = room.value.find((room) => room.roomId === roomId.value);
+  updatedRoom.isOpen = !updatedRoom.isOpen;
 };
 
 const detectTop = () => {
@@ -162,11 +181,12 @@ const detectTop = () => {
 
 const toPrevPage = () => {
   router.go(-1);
+  roomStore.updateRoom([]);
 };
+
 const provideDefault = () => {
-  console.log('room', room);
   return (
-    room.value.avatar ??
+    avatar.value ??
     new URL('../assets/images/user_default.png', import.meta.url)
   );
 };
@@ -174,25 +194,27 @@ const provideDefault = () => {
 onMounted(() => {
   console.warn('mounted');
   // 鎖ios橡皮筋效果
-  deviceType() !== 'desktop' &&
-    (document.body.style = 'overflow: hidden;position:fixed');
+  // deviceType() !== 'desktop' &&
+  //   (document.body.style = 'overflow: hidden;position:fixed');
   detectTop();
 });
 
 onBeforeUnmount(() => {
   console.warn('onBeforeUnmount');
-  roomStore.updateRoom({});
-  socket.emit('leaveRoom', room.value.roomId);
+  socket.emit('leaveRoom', roomId.value);
   socket.off();
   socket.disconnect();
-  document.body.style = '';
+  // document.body.style = '';
   clearTimeout(timer);
 });
 </script>
 
 <template>
   <div
-    class="md:fixed md:border-2 bottom-0 right-10 w-screen md:w-[338px] overflow-hidden h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg"
+    :class="[
+      'pointer-events-auto md:border-2 md:ml-4 md:w-[338px] overflow-hidden h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg relative',
+      { 'lg:h-14': !isOpen }
+    ]"
   >
     <div
       class="h-14 flex px-2 md:px-4 py-2 bg-white justify-between items-center border-b-2"
@@ -200,20 +222,37 @@ onBeforeUnmount(() => {
       <div class="flex items-center">
         <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
         <img class="avatar w-10 h-10" :src="provideDefault()" alt="" />
-        <span class="pl-4 font-bold">{{ room.name }}</span>
+        <span class="pl-4 font-bold">{{ name }}</span>
+        <span v-if="typingFlag" class="text-xs text-gray"
+          >對方正在輸入中...</span
+        >
       </div>
-      <span v-if="typingFlag" class="text-xs text-gray"
-        >對方正在輸入中...</span
-      >
+      <div class="hidden lg:flex">
+        <Minus
+          v-show="isOpen"
+          class="h-6 w-6 cursor-pointer hover:opacity-50"
+          @click="handleOpen"
+        />
+        <Plus
+          v-show="!isOpen"
+          class="h-6 w-6 cursor-pointer hover:opacity-50"
+          @click="handleOpen"
+        />
+        <Close
+          class="h-6 w-6 cursor-pointer hover:opacity-50"
+          @click="closeRoom"
+        />
+      </div>
       <Close
         class="cursor-pointer hidden md:block hover:opacity-50"
         @click="closeRoom"
       />
     </div>
     <div
+      v-show="isOpen"
       id="messageContainer"
       ref="messageContainer"
-      class="inner relative bg-slate-100 overflow-y-auto"
+      class="h-[calc(100vh-56px-48px)] lg:h-[350px] relative bg-slate-100 overflow-y-auto"
     >
       <div class="text-center py-2 text-sm" v-if="messageList.length === 0">
         開始聊天吧！
@@ -235,19 +274,19 @@ onBeforeUnmount(() => {
     >
       您有新訊息
     </div>
-    <chat-room-input-box @userTyping="userTyping" @sendMessage="sendMessage" />
+    <chat-room-input-box v-show="isOpen" @userTyping="userTyping" @sendMessage="sendMessage" />
   </div>
 </template>
 
 <style scoped>
-.inner {
+/* .inner {
   height: 350px;
 }
 @media only screen and (max-width: 640px) {
   .inner {
     height: calc(100vh - 56px - 48px);
   }
-}
+} */
 @supports (-webkit-touch-callout: none) {
   .h-screen {
     height: -webkit-fill-available;

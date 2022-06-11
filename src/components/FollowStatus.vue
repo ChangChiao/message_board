@@ -2,16 +2,14 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import { postAPIData, getAPIData, deleteAPIData } from '@/utils/api/ajax';
 import { storeToRefs } from 'pinia';
-import eventBus from '../utils/eventBus';
-import { useRoomStore, useUserStore } from '@/store';
-import { deviceType } from '@/utils/common';
-import { useRouter, useRoute } from 'vue-router';
+import { useUserStore } from '@/store';
+import { useRoute } from 'vue-router';
+import useChat from '@/use/useChat';
 import Loading from '@/icons/Loading';
-const router = useRouter();
 const route = useRoute();
 const useStore = useUserStore();
-const roomStore = useRoomStore();
 const { user } = storeToRefs(useStore);
+const { handleRoom } = useChat();
 const pending = ref(false);
 const profile = reactive({});
 const paramId = computed(() => route.params.id);
@@ -59,17 +57,9 @@ const sendMessage = async () => {
   try {
     pending.value = true;
     const res = await postAPIData('/chat/room-info', sendData);
-    const { status, roomId, name, avatar, _id } = res;
-    if (status === 'success') {
-      console.log('res', res);
-      roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
-      eventBus.emit('handleRoom', true);
-      if (deviceType() !== 'desktop') {
-        router.push('/chat-room');
-        return;
-      }
-      eventBus.emit('handleRoom', true);
-    }
+    const { status, roomId, name, avatar } = res;
+    if (!status) return;
+    handleRoom({ roomId, name, avatar });
   } catch (error) {
     console.log('error', error);
   } finally {

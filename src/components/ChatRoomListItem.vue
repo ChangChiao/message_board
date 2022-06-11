@@ -1,16 +1,8 @@
 <script setup>
 import { toRefs, defineProps } from 'vue';
-import { useToast } from 'vue-toastification';
 import dayjs from 'dayjs';
-import eventBus from '../utils/eventBus';
-import { useRouter } from 'vue-router';
-import { storeToRefs } from 'pinia';
-import { deviceType } from '../utils/common';
-import { useRoomStore } from '@/store';
-const roomStore = useRoomStore();
-const toast = useToast();
-const { room } = storeToRefs(roomStore);
-const router = useRouter();
+import useChat from '@/use/useChat';
+const { handleRoom } = useChat();
 const props = defineProps({
   room: {
     type: Object,
@@ -18,7 +10,7 @@ const props = defineProps({
     default: () => {}
   }
 });
-const { name, message: msg, avatar, roomId, _id } = toRefs(props.room);
+const { name, message: msg, avatar } = toRefs(props.room);
 const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD HH:MM');
 };
@@ -29,17 +21,7 @@ const provideDefault = () => {
   );
 };
 const goChatRoom = () => {
-  if (room.value.roomId && room.value.roomId !== roomId.value) {
-    toast.error('您一次只能跟一個人聊天');
-    return;
-  }
-  roomStore.updateRoom({ roomId, name, avatar, receiver: _id });
-  console.log('deviceType()', deviceType());
-  if (deviceType() !== 'desktop') {
-    router.push('/chat-room');
-    return;
-  }
-  eventBus.emit('handleRoom', true);
+  handleRoom(props.room);
 };
 </script>
 
