@@ -3,14 +3,17 @@ import dayjs from 'dayjs';
 import { storeToRefs } from 'pinia';
 import { defineProps, defineEmits, ref } from 'vue';
 import { useUserStore } from '@/store';
+import { deleteAPIData, postAPIData } from '../utils/api/ajax.js';
 import { useToast } from 'vue-toastification';
+import Loading from '../icons/Loading.vue';
 import Like from '@/icons/Like.vue';
 import Comment from '@/components/Comment';
 const content = ref('');
 const useStore = useUserStore();
 const { user } = storeToRefs(useStore);
 const toast = useToast();
-const emit = defineEmits(['handleLike', 'handleComment']);
+const likeLoading = ref(false);
+const emit = defineEmits(['fetchData', 'handleComment']);
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   postData: {
@@ -22,12 +25,25 @@ const formateTime = (time) => {
   return dayjs(time).format('YYYY/MM/DD HH:mm');
 };
 
-const handleLike = () => {
-  if (props.postData.likes.includes(user.value._id)) {
-    emit('handleLike', { id: props.postData.id, setLike: false });
-  } else {
-    emit('handleLike', { id: props.postData.id, setLike: true });
+const setLike = async ({ id, isLike }) => {
+  if (likeLoading.value) return;
+  const queryWay = isLike
+    ? postAPIData(`/posts/${id}/likes`)
+    : deleteAPIData(`/posts/${id}/unlikes`);
+  try {
+    likeLoading.value = true;
+    const result = await queryWay;
+    result.status === 'success' && emit('fetchData', false);
+  } catch (error) {
+    console.log('error', error);
+  } finally {
+    likeLoading.value = false;
   }
+};
+
+const handleLike = () => {
+  const isLike = props.postData.likes.includes(user.value._id);
+  setLike({ id: props.postData.id, isLike: !isLike });
 };
 
 const handleComment = () => {
@@ -65,7 +81,8 @@ const handleComment = () => {
     />
     <div class="flex items-center py-2">
       <Like class="cursor-pointer text-primary" @click="handleLike" />
-      <span class="pl-1">
+      <Loading v-show="likeLoading" class="ml-1 h-4 w-4 animate-spin" />
+      <span class="pl-1" v-show="!likeLoading">
         {{ postData.likes.length }}
       </span>
     </div>

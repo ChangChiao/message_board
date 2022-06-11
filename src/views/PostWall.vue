@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, computed, reactive, provide, watch, inject } from 'vue';
-import { getAPIData, postAPIData, deleteAPIData } from '../utils/api/ajax.js';
+import { getAPIData, postAPIData } from '../utils/api/ajax.js';
 import { useRoute } from 'vue-router';
 import Post from '../components/Post.vue';
 import SearchBar from '../components/SearchBar.vue';
@@ -10,7 +10,6 @@ import NoRecord from '../components/NoRecord.vue';
 const controlLoading = inject('controlLoading');
 const postList = reactive([]);
 const route = useRoute();
-
 const isPersonal = computed(() => {
   return route.path.startsWith('/post');
 });
@@ -62,18 +61,6 @@ const fetchAll = async (needLoading) => {
   controlLoading(false);
 };
 
-const handleLike = async ({ id, setLike }) => {
-  const queryWay = setLike
-    ? postAPIData(`/posts/${id}/likes`)
-    : deleteAPIData(`/posts/${id}/unlikes`);
-  try {
-    const result = await queryWay;
-    result.status === 'success' && fetchData(false);
-  } catch (error) {
-    console.log('error', error);
-  }
-};
-
 const handleComment = async ({ id, content }) => {
   try {
     const result = await postAPIData(`/posts/${id}/comment`, {
@@ -117,8 +104,9 @@ onMounted(() => {
   <template v-for="item in postList" :key="item._id">
     <Post
       @handleComment="handleComment"
-      @handleLike="handleLike"
+      @fetchData="fetchData"
       :postData="item"
+      :likeLoading="likeLoading"
     />
   </template>
   <NoRecord v-if="postList.length === 0" />
