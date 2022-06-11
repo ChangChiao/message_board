@@ -28,8 +28,7 @@ const resetPassword = async () => {
       updateData.confirmPassword = '';
     }
   } catch (error) {
-    const msg = error.response.data.message;
-    msg && toast.error(msg);
+    console.log(error);
   } finally {
     controlLoading(false);
   }

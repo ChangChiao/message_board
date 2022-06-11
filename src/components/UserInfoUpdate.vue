@@ -60,8 +60,7 @@ const updateInfo = async () => {
     }
     toast.success('修改成功');
   } catch (error) {
-    const msg = error.response.data.message;
-    msg && toast.error(msg);
+    console.log(error);
   } finally {
     controlLoading(false);
   }

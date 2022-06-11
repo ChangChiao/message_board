@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
 const toast = useToast();
+const router = useRouter();
 const service = axios.create({});
 service.interceptors.request.use(
   (config) => {
@@ -25,8 +27,12 @@ service.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    // const { status } = error.response;
-    // console.log(`error--${status}`, 'error');
+    const { status } = error.response;
+    console.log(`error--${status}`, 'error');
+    if (status === 401) {
+      localStorage.setItem('token', '');
+      router.push('/login');
+    }
     // eslint-disable-next-line prefer-promise-reject-errors
     const errorMsg = error.response?.data.message?.message;
     errorMsg && toast.error(errorMsg);
