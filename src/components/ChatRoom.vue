@@ -212,15 +212,15 @@ onBeforeUnmount(() => {
 <template>
   <div
     :class="[
-      'pointer-events-auto md:border-2 md:ml-4 md:w-[338px] overflow-hidden h-screen md:h-[455px] rounded-tl-lg rounded-tr-lg relative',
+      'pointer-events-auto lg:border-2 lg:ml-4 lg:w-[338px] overflow-hidden h-screen lg:h-[455px] rounded-tl-lg rounded-tr-lg relative',
       { 'lg:h-14': !isOpen }
     ]"
   >
     <div
-      class="h-14 flex px-2 md:px-4 py-2 bg-white justify-between items-center border-b-2"
+      class="h-14 flex px-2 lg:px-4 py-2 bg-white justify-between items-center border-b-2"
     >
       <div class="flex items-center">
-        <Back @click="toPrevPage" class="block md:hidden w-8 h-8 mr-2" />
+        <Back @click="toPrevPage" class="block lg:hidden w-8 h-8 mr-2" />
         <img class="avatar w-10 h-10" :src="provideDefault()" alt="" />
         <span class="pl-4 font-bold">{{ name }}</span>
         <span v-if="typingFlag" class="text-xs text-gray"
@@ -243,10 +243,6 @@ onBeforeUnmount(() => {
           @click="closeRoom"
         />
       </div>
-      <Close
-        class="cursor-pointer hidden md:block hover:opacity-50"
-        @click="closeRoom"
-      />
     </div>
     <div
       v-show="isOpen"

@@ -40,12 +40,12 @@ const handleSubmit = async () => {
     } = res;
     if (status === 'success') {
       localStorage.setItem('token', token);
+      localStorage.setItem('room', []);
       useStore.updateUser({ name });
     }
     router.push('/');
   } catch (error) {
-    const msg = error.response.data.message;
-    msg && toast.error(msg);
+    console.log('error', error);
   } finally {
     controlLoading(false);
   }

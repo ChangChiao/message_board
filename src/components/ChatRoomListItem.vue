@@ -35,7 +35,7 @@ const goChatRoom = () => {
       <div class="flex-1 pl-2">
         <p class="font-bold">{{ name }}</p>
         <p
-          class="w-[200px] md:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
+          class="w-[200px] lg:w-80 h-10 whitespace-nowrap overflow-hidden overflow-ellipsis text-sm text-slate-700"
         >
           {{ msg?.[0]?.message }}
         </p>

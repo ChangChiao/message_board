@@ -15,7 +15,7 @@ const routes = [
     component: Login
   },
   {
-    path: '/chatroom',
+    path: '/chat-room',
     name: 'ChatRoom',
     component: ChatRoom
   },

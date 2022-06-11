@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
-import { postAPIData } from '@/utils/api/ajax';
+import { getAPIData } from '@/utils/api/ajax';
 import ChatRoomListItem from '@/components/ChatRoomListItem.vue';
 import eventBus from '../utils/eventBus';
 import Loading from '@/icons/Loading.vue';
@@ -16,7 +16,7 @@ eventBus.on('updateChatRecord', updateChatRecord);
 const queryRoomList = async () => {
   pending.value = true;
   try {
-    const res = await postAPIData('/chat/chat-record');
+    const res = await getAPIData('/chat/chat-record');
     const { status, chatRecord } = res;
     if (status === 'success') {
       console.log('res', res);

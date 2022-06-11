@@ -29,13 +29,15 @@ service.interceptors.response.use(
   (error) => {
     const { status } = error.response;
     console.log(`error--${status}`, 'error');
+    console.warn(' error.response', error.response);
+
+    // eslint-disable-next-line prefer-promise-reject-errors
+    const errorMsg = error.response?.data.message?.message;
+    errorMsg && toast.error(errorMsg);
     if (status === 401) {
       localStorage.setItem('token', '');
       router.push('/login');
     }
-    // eslint-disable-next-line prefer-promise-reject-errors
-    const errorMsg = error.response?.data.message?.message;
-    errorMsg && toast.error(errorMsg);
     return Promise.reject(error);
   }
 );

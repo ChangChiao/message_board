@@ -15,13 +15,13 @@ onMounted(() => {
 <template>
   <Header />
   <div
-    class="flex justify-between md:pt-16 pt-2 px-2 w-full md:w-[869px] m-auto"
+    class="flex justify-between lg:pt-16 pt-2 px-2 w-full lg:w-[869px] m-auto"
   >
-    <section class="w-full md:w-[533px]">
+    <section class="w-full lg:w-[533px]">
       <router-view />
       <ToolBar />
     </section>
-    <aside class="hidden md:block">
+    <aside class="hidden lg:block">
       <PostWallMenu />
     </aside>
     <chat-container />

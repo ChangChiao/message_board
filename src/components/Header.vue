@@ -15,7 +15,7 @@ console.log('name', user.value.name);
 </script>
 <template>
   <header class="bg-white border-b-2 p-4 relative">
-    <div class="md:w-[869px] mx-auto flex justify-between items-center">
+    <div class="lg:w-[869px] mx-auto flex justify-between items-center">
       <router-link class="text-[26px] block font-logo" to="/"
         >MetaWall</router-link
       >

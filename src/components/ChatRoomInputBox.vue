@@ -37,7 +37,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="bg-slate-700 w-full p-2 fixed md:absolute bottom-0 flex justify-between items-center left-0"
+    class="bg-slate-700 w-full p-2 fixed lg:absolute bottom-0 flex justify-between items-center left-0"
   >
     <div
       class="bg-white min-h-[32px] max-h-36 flex items-center rounded-2xl w-11/12 break-all px-2 outline-none overflow-hidden"

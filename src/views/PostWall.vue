@@ -106,7 +106,7 @@ onMounted(() => {
 
 <template>
   <FollowStatus v-if="isPersonal" />
-  <div v-else class="md:flex justify-between">
+  <div v-else class="lg:flex justify-between">
     <Select
       v-model="searchData.sort"
       @change="fetchAll"
