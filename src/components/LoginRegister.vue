@@ -1,5 +1,4 @@
 <script setup>
-import { useToast } from 'vue-toastification';
 import { reactive, onBeforeUnmount, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import Input from '../components/Input.vue';
@@ -7,7 +6,6 @@ import { postAPIData } from '@/utils/api/ajax';
 import { useValidateStore, useUserStore } from '@/store';
 import { storeToRefs } from 'pinia';
 const validateStore = useValidateStore();
-const toast = useToast();
 const useStore = useUserStore();
 const { validateList } = storeToRefs(validateStore);
 const controlLoading = inject('controlLoading');
@@ -77,7 +75,7 @@ onBeforeUnmount(() => {
     <button @click="handleSubmit" class="mt-6 w-[374px] h-[54px] button block">
       註冊
     </button>
-    <a class="text-black pt-3 block cursor-pointer" @click.prevent="setComp"
+    <a class="block pt-3 text-black cursor-pointer" @click.prevent="setComp"
       >登入</a
     >
   </div>

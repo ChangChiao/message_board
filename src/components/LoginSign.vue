@@ -1,5 +1,4 @@
 <script setup>
-import { useToast } from 'vue-toastification';
 import { reactive, onBeforeUnmount, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import Input from '../components/Input.vue';
@@ -10,7 +9,6 @@ const validateStore = useValidateStore();
 const useStore = useUserStore();
 const { validateList } = storeToRefs(validateStore);
 const controlLoading = inject('controlLoading');
-const toast = useToast();
 // eslint-disable-next-line no-undef
 const emit = defineEmits(['setComp']);
 const router = useRouter();
@@ -75,7 +73,7 @@ onBeforeUnmount(() => {
     <button @click="handleSubmit" class="mt-6 w-[374px] h-[54px] button block">
       登入
     </button>
-    <a class="text-black pt-3 block cursor-pointer" @click.prevent="setComp"
+    <a class="block pt-3 text-black cursor-pointer" @click.prevent="setComp"
       >註冊帳號</a
     >
   </div>
